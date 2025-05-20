@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Noir Detective Mysteries</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Crimson+Text:wght@400;700&family=Source+Sans+Pro:wght@300;400;600&display=swap");
+
+      body {
+        font-family: "Source Sans Pro", sans-serif;
+        background-color: #0a0a0a;
+        color: #e0e0e0;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="none" stroke="%23222" stroke-width="0.5"/></svg>');
+        background-size: 20px 20px;
+        min-height: 100vh;
+      }
+
+      .title-font {
+        font-family: "Crimson Text", serif;
+      }
+
+      .parchment {
+        background-color: #1a120b;
+        background-image: linear-gradient(
+            to bottom,
+            rgba(26, 18, 11, 0.8),
+            rgba(40, 30, 20, 0.8)
+          ),
+          url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path d="M10,10 L90,10 L90,90 L10,90 Z" fill="none" stroke="%23333" stroke-width="1" stroke-dasharray="5,5"/></svg>');
+        border: 1px solid #3a2c1a;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+      }
+
+      .flicker {
+        animation: flicker 8s infinite alternate;
+      }
+
+      @keyframes flicker {
+        0%,
+        19%,
+        21%,
+        23%,
+        25%,
+        54%,
+        56%,
+        100% {
+          opacity: 1;
+        }
+        20%,
+        22%,
+        24%,
+        55% {
+          opacity: 0.7;
+        }
+      }
+
+      .glow {
+        transition: all 0.3s ease;
+      }
+
+      .glow:hover {
+        box-shadow: 0 0 15px rgba(210, 180, 140, 0.5);
+        transform: translateY(-2px);
+      }
+
+      .slide-in {
+        animation: slideIn 0.5s ease-out forwards;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .typewriter {
+        overflow: hidden;
+        border-right: 2px solid #c9a66b;
+        white-space: nowrap;
+        animation: typing 3.5s steps(40, end),
+          blink-caret 0.75s step-end infinite;
+      }
+
+      @keyframes typing {
+        from {
+          width: 0;
+        }
+        to {
+          width: 100%;
+        }
+      }
+
+      @keyframes blink-caret {
+        from,
+        to {
+          border-color: transparent;
+        }
+        50% {
+          border-color: #c9a66b;
+        }
+      }
+
+      .shadow-move {
+        animation: shadowMove 15s infinite alternate;
+      }
+
+      @keyframes shadowMove {
+        0% {
+          box-shadow: 15px 15px 30px rgba(0, 0, 0, 0.7);
+        }
+        50% {
+          box-shadow: -15px 15px 30px rgba(0, 0, 0, 0.7);
+        }
+        100% {
+          box-shadow: 15px -15px 30px rgba(0, 0, 0, 0.7);
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen flex flex-col items-center p-4">
+    <!-- Welcome Section -->
+    <div id="welcome-section" class="w-full max-w-4xl mt-10 slide-in">
+      <div
+        class="p-8 rounded-lg parchment shadow-move relative overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-20"
+        ></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-center mb-8">
+            <i class="fas fa-search text-amber-600 text-4xl mr-4 flicker"></i>
+            <h1
+              class="title-font text-4xl md:text-5xl font-bold text-amber-600 tracking-wider"
+            >
+              NOIR DETECTIVE MYSTERIES
+            </h1>
+          </div>
+
+          <div id="welcome-message" class="hidden mb-8">
+            <p
+              id="welcome-text"
+              class="text-xl text-gray-300 mb-4 typewriter"
+            ></p>
+            <div class="flex justify-center">
+              <button
+                id="continue-btn"
+                class="bg-amber-700 hover:bg-amber-600 text-white px-6 py-2 rounded-md glow transition-all duration-300"
+              >
+                Continue Your Investigation
+                <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <div id="name-form" class="mb-8">
+            <p class="text-gray-300 mb-6 text-center text-lg">
+              Enter your name to begin your detective journey
+            </p>
+            <div class="flex flex-col items-center">
+              <div class="relative w-full max-w-md">
+                <input
+                  type="text"
+                  id="detective-name"
+                  placeholder="Your detective name..."
+                  class="w-full bg-gray-900 border border-gray-700 text-gray-200 px-4 py-3 rounded focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent"
+                />
+                <div
+                  id="name-error"
+                  class="hidden absolute -bottom-6 left-0 text-red-400 text-sm mt-1"
+                >
+                  <i class="fas fa-exclamation-circle mr-1"></i> Must enter
+                  something
+                </div>
+              </div>
+              <button
+                id="start-btn"
+                class="mt-8 bg-amber-700 hover:bg-amber-600 text-white px-6 py-2 rounded-md glow transition-all duration-300"
+              >
+                Start Investigation <i class="fas fa-search ml-2"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-700 pt-6 mt-8">
+            <h2 class="title-font text-xl text-amber-500 mb-4">
+              Featured Cases
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div
+                class="bg-gray-800 p-4 rounded border-l-4 border-amber-600 glow"
+              >
+                <h3 class="title-font text-lg text-amber-400 mb-2">
+                  The Enigma of the Silent Museum
+                </h3>
+                <p class="text-gray-400 text-sm">
+                  A priceless artifact vanishes under impossible
+                  circumstances...
+                </p>
+              </div>
+              <div
+                class="bg-gray-800 p-4 rounded border-l-4 border-red-600 glow"
+              >
+                <h3 class="title-font text-lg text-red-400 mb-2">
+                  The Shadow in the Haunted Mansion
+                </h3>
+                <p class="text-gray-400 text-sm">
+                  A wealthy recluse is found dead with no signs of forced
+                  entry...
+                </p>
+              </div>
+              <div
+                class="bg-gray-800 p-4 rounded border-l-4 border-green-600 glow"
+              >
+                <h3 class="title-font text-lg text-green-400 mb-2">
+                  The Midnight Express Mystery
+                </h3>
+                <p class="text-gray-400 text-sm">
+                  A passenger disappears from a locked train compartment...
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Game Section (hidden initially) -->
+    <div id="game-section" class="hidden w-full max-w-6xl mt-10">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <!-- Detective Info Panel -->
+        <div class="lg:col-span-1 parchment p-6 rounded-lg h-fit">
+          <div class="flex items-center mb-6">
+            <div
+              class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-4"
+            >
+              <i class="fas fa-user-secret text-2xl text-amber-500"></i>
+            </div>
+            <div>
+              <h2
+                id="detective-name-display"
+                class="title-font text-xl text-amber-400"
+              ></h2>
+              <p class="text-gray-400 text-sm">Private Investigator</p>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-700 pt-4 mb-4">
+            <div class="flex justify-between mb-2">
+              <span class="text-gray-400">Cases Solved:</span>
+              <span id="cases-solved" class="text-amber-400">0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-400">Total Attempts:</span>
+              <span id="total-attempts" class="text-amber-400">0</span>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-700 pt-4">
+            <h3 class="title-font text-lg text-amber-500 mb-3">
+              Your Notebook
+            </h3>
+            <div class="bg-gray-900 bg-opacity-50 p-3 rounded">
+              <p id="notebook-entry" class="text-gray-300 text-sm italic">
+                No notes yet...
+              </p>
+            </div>
+            <textarea
+              id="notebook-input"
+              class="w-full mt-2 bg-gray-900 bg-opacity-50 text-gray-300 p-2 text-sm rounded border border-gray-700 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              placeholder="Add your notes here..."
+            ></textarea>
+            <button
+              id="save-notes"
+              class="mt-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm px-3 py-1 rounded glow"
+            >
+              <i class="fas fa-save mr-1"></i> Save Notes
+            </button>
+          </div>
+        </div>
+
+        <!-- Main Game Content -->
+        <div class="lg:col-span-3">
+          <!-- Pending Mysteries List -->
+          <div class="parchment p-6 rounded-lg mb-6">
+            <h2
+              class="title-font text-2xl text-amber-500 mb-4 flex items-center"
+            >
+              <i class="fas fa-folder-open mr-3"></i> Active Cases
+            </h2>
+            <div
+              id="mysteries-list"
+              class="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
+              <!-- Mysteries will be added here dynamically -->
+            </div>
+          </div>
+
+          <!-- Mystery Resolution Area -->
+          <div id="mystery-area" class="hidden parchment p-6 rounded-lg">
+            <div class="flex justify-between items-center mb-6">
+              <h2
+                id="mystery-title"
+                class="title-font text-2xl text-amber-500"
+              ></h2>
+              <div class="flex items-center">
+                <span class="text-gray-400 mr-2">Attempts left:</span>
+                <span
+                  id="attempts-left"
+                  class="bg-red-900 text-red-200 px-2 py-1 rounded text-sm"
+                  >3</span
+                >
+              </div>
+            </div>
+
+            <div
+              id="mystery-narrative"
+              class="bg-gray-900 bg-opacity-50 p-4 rounded mb-6 text-gray-300"
+            >
+              <!-- Narrative will be added here dynamically -->
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div>
+                <h3
+                  class="title-font text-lg text-amber-400 mb-3 flex items-center"
+                >
+                  <i class="fas fa-map-marker-alt mr-2"></i> Locations
+                </h3>
+                <div id="locations" class="space-y-2">
+                  <!-- Locations will be added here dynamically -->
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="title-font text-lg text-amber-400 mb-3 flex items-center"
+                >
+                  <i class="fas fa-box-open mr-2"></i> Objects
+                </h3>
+                <div id="objects" class="space-y-2">
+                  <!-- Objects will be added here dynamically -->
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="title-font text-lg text-amber-400 mb-3 flex items-center"
+                >
+                  <i class="fas fa-user mr-2"></i> Suspects
+                </h3>
+                <div id="suspects" class="space-y-2">
+                  <!-- Suspects will be added here dynamically -->
+                </div>
+              </div>
+            </div>
+
+            <div
+              id="results-area"
+              class="hidden bg-gray-900 bg-opacity-70 border-l-4 border-amber-500 p-4 rounded mb-6"
+            >
+              <h3 class="title-font text-lg text-amber-400 mb-2">
+                Investigation Results
+              </h3>
+              <div id="results-content" class="text-gray-300">
+                <!-- Results will be added here dynamically -->
+              </div>
+            </div>
+
+            <div class="flex justify-between">
+              <button
+                id="back-to-cases"
+                class="bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded glow"
+              >
+                <i class="fas fa-arrow-left mr-2"></i> Back to Cases
+              </button>
+              <button
+                id="reset-mystery"
+                class="bg-red-900 hover:bg-red-800 text-red-200 px-4 py-2 rounded glow"
+              >
+                <i class="fas fa-undo mr-2"></i> Reset Mystery
+              </button>
+            </div>
+          </div>
+
+          <!-- Case Solved Modal -->
+          <div
+            id="solved-modal"
+            class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+          >
+            <div
+              class="bg-gray-900 border-2 border-amber-600 rounded-lg p-8 max-w-md w-full relative"
+            >
+              <button
+                id="close-modal"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+              <div class="text-center">
+                <div class="text-6xl text-amber-500 mb-4">
+                  <i class="fas fa-trophy"></i>
+                </div>
+                <h3 class="title-font text-2xl text-amber-400 mb-2">
+                  Case Solved!
+                </h3>
+                <p id="solution-text" class="text-gray-300 mb-6"></p>
+                <button
+                  id="next-case"
+                  class="bg-amber-700 hover:bg-amber-600 text-white px-6 py-2 rounded-md glow"
+                >
+                  Take Another Case <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="mt-12 mb-6 text-gray-500 text-sm">
+      <p>© 2023 Noir Detective Mysteries. All rights reserved.</p>
+    </footer>
+
+    <script>
+      // Game Data
+      const mysteries = {
+        museum: {
+          title: "The Enigma of the Silent Museum",
+          narrative:
+            "The city's prestigious Grand Museum has reported the disappearance of the legendary 'Eye of Horus' amulet from its heavily secured Egyptian exhibit. The glass case was intact, the alarms never triggered, and the security cameras show nothing but static during the time of the theft. The museum director, a renowned Egyptologist, is distraught. You've been called in to solve this impossible crime.",
+          locations: [
+            {
+              name: "Egyptian Exhibit",
+              clue: "The display case has no fingerprints except the curator's. There's a faint smell of lavender.",
+            },
+            {
+              name: "Security Room",
+              clue: "The cameras were disabled remotely. The security log shows an admin login at the time of the theft.",
+            },
+            {
+              name: "Director's Office",
+              clue: "You find a receipt for a large bank deposit made yesterday to an offshore account.",
+            },
+          ],
+          objects: [
+            {
+              name: "Display Case",
+              clue: "The case was opened with a key, not broken into. The lock shows no signs of tampering.",
+            },
+            {
+              name: "Security Logs",
+              clue: "The admin login came from a terminal inside the museum, not remotely.",
+            },
+            {
+              name: "Visitor Log",
+              clue: "Only three people were in the museum at the time: the director, the night guard, and a visiting professor.",
+            },
+          ],
+          suspects: [
+            {
+              name: "Dr. Evelyn Carter",
+              clue: "The museum director. She has full access but claims she was in her office all night.",
+            },
+            {
+              name: "Prof. James Whitmore",
+              clue: "Visiting Egyptologist. His specialty is ancient security mechanisms.",
+            },
+            {
+              name: "Frank O'Reilly",
+              clue: "Night guard. His daughter needs an expensive surgery.",
+            },
+          ],
+          solution: {
+            culprit: "Dr. Evelyn Carter",
+            method:
+              "Dr. Carter used her knowledge of the museum's systems to disable the cameras from her office, then used her master key to remove the amulet. The lavender scent was from her perfume. She planned to sell the amulet to pay off gambling debts, evidenced by the offshore account deposit.",
+            requiredClues: 5,
+          },
+        },
+        mansion: {
+          title: "The Shadow in the Haunted Mansion",
+          narrative:
+            "Wealthy recluse Montgomery Van Der Linde was found dead in his locked study at the family mansion. The door was locked from the inside, the windows barred, and the only key was found in the victim's pocket. The coroner reports death by poisoning, but no poison was found in the room. The staff claim to have seen a shadowy figure moving through the halls that night, but the mansion's security system shows no intruders.",
+          locations: [
+            {
+              name: "Study",
+              clue: "The fireplace has unusual scratch marks on the inside. The ashes smell faintly of almonds.",
+            },
+            {
+              name: "Kitchen",
+              clue: "The cook prepared Mr. Van Der Linde's usual evening tea. The teacup is missing from the tray.",
+            },
+            {
+              name: "Library",
+              clue: "A book on rare poisons is lying open on the desk. A page about cyanide has been dog-eared.",
+            },
+          ],
+          objects: [
+            {
+              name: "Tea Set",
+              clue: "The teapot tests positive for traces of cyanide. The missing cup was the victim's favorite.",
+            },
+            {
+              name: "Fireplace Tools",
+              clue: "The poker shows signs of recent use, though the fire hadn't been lit in days.",
+            },
+            {
+              name: "Security Footage",
+              clue: "The system was rebooted at 9:17pm, creating a 3-minute gap in coverage.",
+            },
+          ],
+          suspects: [
+            {
+              name: "Victoria Van Der Linde",
+              clue: "The victim's niece and sole heir. She stands to inherit the entire estate.",
+            },
+            {
+              name: "Gregory Smythe",
+              clue: "The butler. He served the tea that night and has worked for the family for 30 years.",
+            },
+            {
+              name: "Dr. Lucius Fairchild",
+              clue: "Family physician. He visited unexpectedly that evening with 'medical supplies'.",
+            },
+          ],
+          solution: {
+            culprit: "Gregory Smythe",
+            method:
+              "The butler used the fireplace tools to pass the poisoned teacup through the chimney into the locked study, then retrieved it the same way. The scratch marks were from the cup being lowered and raised. He rebooted the security system to cover his movements in the hall. His motive was revenge for being passed over in the victim's will after decades of service.",
+            requiredClues: 4,
+          },
+        },
+        train: {
+          title: "The Midnight Express Mystery",
+          narrative:
+            "On the luxurious Orient Express-style Midnight Express train, wealthy industrialist Charles Kensington vanished from his locked first-class compartment between stops. The door was locked from the inside, the window was too small to escape through, and the corridor was under constant surveillance by the porter. Kensington's briefcase, containing sensitive documents, was left behind. The only clues are a single glove found in the corridor and a faint smell of cigar smoke in the compartment.",
+          locations: [
+            {
+              name: "Kensington's Compartment",
+              clue: "The bed appears slept in. The window latch is broken from the inside.",
+            },
+            {
+              name: "Dining Car",
+              clue: "Kensington was seen arguing with another passenger before retiring for the night.",
+            },
+            {
+              name: "Baggage Car",
+              clue: "A steamer trunk shows signs of recent use, with faint scratches near the lock.",
+            },
+          ],
+          objects: [
+            {
+              name: "The Glove",
+              clue: "Monogrammed with the initials 'R.B.'. Made of expensive leather, slightly too large for Kensington.",
+            },
+            {
+              name: "Briefcase",
+              clue: "The documents are all present but appear to have been photographed.",
+            },
+            {
+              name: "Train Manifest",
+              clue: "Lists only 12 passengers, but the dining car served 13 meals that night.",
+            },
+          ],
+          suspects: [
+            {
+              name: "Richard Blackwell",
+              clue: "Business rival. Known to smoke Cuban cigars. His gloves are missing one.",
+            },
+            {
+              name: "Madame Dubois",
+              clue: "Mysterious widow. Was seen entering Kensington's compartment earlier.",
+            },
+            {
+              name: "Conductor Graves",
+              clue: "Has worked this route for years. Was unusually insistent on checking tickets that night.",
+            },
+          ],
+          solution: {
+            culprit: "Richard Blackwell",
+            method:
+              "Blackwell hid in the baggage car trunk to board without being listed. He used a duplicate key (obtained from Madame Dubois) to enter Kensington's compartment, photographed the documents, then staged the disappearance by breaking the window latch to suggest Kensington escaped. He left his glove intentionally to mislead investigators. The cigar smell was from his habitual smoking.",
+            requiredClues: 5,
+          },
+        },
+      };
+
+      // Game State
+      let gameState = {
+        detectiveName: "",
+        casesSolved: 0,
+        totalAttempts: 0,
+        currentMystery: null,
+        discoveredClues: [],
+        attemptsLeft: 3,
+        notebook: "",
+      };
+
+      // DOM Elements
+      const welcomeSection = document.getElementById("welcome-section");
+      const gameSection = document.getElementById("game-section");
+      const nameForm = document.getElementById("name-form");
+      const welcomeMessage = document.getElementById("welcome-message");
+      const welcomeText = document.getElementById("welcome-text");
+      const continueBtn = document.getElementById("continue-btn");
+      const detectiveNameInput = document.getElementById("detective-name");
+      const nameError = document.getElementById("name-error");
+      const startBtn = document.getElementById("start-btn");
+      const detectiveNameDisplay = document.getElementById(
+        "detective-name-display"
+      );
+      const casesSolvedDisplay = document.getElementById("cases-solved");
+      const totalAttemptsDisplay = document.getElementById("total-attempts");
+      const mysteriesList = document.getElementById("mysteries-list");
+      const mysteryArea = document.getElementById("mystery-area");
+      const mysteryTitle = document.getElementById("mystery-title");
+      const mysteryNarrative = document.getElementById("mystery-narrative");
+      const attemptsLeftDisplay = document.getElementById("attempts-left");
+      const locationsList = document.getElementById("locations");
+      const objectsList = document.getElementById("objects");
+      const suspectsList = document.getElementById("suspects");
+      const resultsArea = document.getElementById("results-area");
+      const resultsContent = document.getElementById("results-content");
+      const backToCasesBtn = document.getElementById("back-to-cases");
+      const resetMysteryBtn = document.getElementById("reset-mystery");
+      const notebookEntry = document.getElementById("notebook-entry");
+      const notebookInput = document.getElementById("notebook-input");
+      const saveNotesBtn = document.getElementById("save-notes");
+      const solvedModal = document.getElementById("solved-modal");
+      const solutionText = document.getElementById("solution-text");
+      const closeModalBtn = document.getElementById("close-modal");
+      const nextCaseBtn = document.getElementById("next-case");
+
+      // Event Listeners
+      detectiveNameInput.addEventListener("keydown", () => {
+        nameError.classList.add("hidden");
+      });
+
+      startBtn.addEventListener("click", startGame);
+      continueBtn.addEventListener("click", continueGame);
+      backToCasesBtn.addEventListener("click", showMysteriesList);
+      resetMysteryBtn.addEventListener("click", resetCurrentMystery);
+      saveNotesBtn.addEventListener("click", saveNotebook);
+      closeModalBtn.addEventListener("click", closeSolvedModal);
+      nextCaseBtn.addEventListener("click", closeSolvedModal);
+
+      // Initialize the game
+      function initGame() {
+        // Load saved game state from localStorage
+        const savedState = localStorage.getItem("noirDetectiveGame");
+        if (savedState) {
+          gameState = JSON.parse(savedState);
+          showWelcomeBack();
+        } else {
+          showNewPlayerWelcome();
+        }
+      }
+
+      function showWelcomeBack() {
+        nameForm.classList.add("hidden");
+        welcomeText.textContent = `Welcome back, detective ${gameState.detectiveName}. Ready to continue your investigations?`;
+        welcomeMessage.classList.remove("hidden");
+      }
+
+      function showNewPlayerWelcome() {
+        nameForm.classList.remove("hidden");
+        welcomeMessage.classList.add("hidden");
+      }
+
+      function startGame() {
+        const name = detectiveNameInput.value.trim();
+        if (!name) {
+          nameError.classList.remove("hidden");
+          return;
+        }
+
+        gameState.detectiveName = name;
+        gameState.casesSolved = 0;
+        gameState.totalAttempts = 0;
+        gameState.currentMystery = null;
+        gameState.discoveredClues = [];
+        gameState.attemptsLeft = 3;
+        gameState.notebook = "";
+
+        saveGameState();
+        showGameSection();
+      }
+
+      function continueGame() {
+        showGameSection();
+      }
+
+      function showGameSection() {
+        welcomeSection.classList.add("hidden");
+        gameSection.classList.remove("hidden");
+        updateDetectiveInfo();
+        renderMysteriesList();
+      }
+
+      function updateDetectiveInfo() {
+        detectiveNameDisplay.textContent = gameState.detectiveName;
+        casesSolvedDisplay.textContent = gameState.casesSolved;
+        totalAttemptsDisplay.textContent = gameState.totalAttempts;
+        notebookEntry.textContent = gameState.notebook || "No notes yet...";
+        notebookInput.value = gameState.notebook || "";
+      }
+
+      function renderMysteriesList() {
+        mysteriesList.innerHTML = "";
+
+        for (const [id, mystery] of Object.entries(mysteries)) {
+          const mysteryCard = document.createElement("div");
+          mysteryCard.className =
+            "bg-gray-800 p-4 rounded border-l-4 border-amber-600 glow cursor-pointer hover:bg-gray-700 transition-colors";
+          mysteryCard.innerHTML = `
+                    <h3 class="title-font text-lg text-amber-400 mb-2">${
+                      mystery.title
+                    }</h3>
+                    <p class="text-gray-400 text-sm mb-3">${mystery.narrative.substring(
+                      0,
+                      100
+                    )}...</p>
+                    <button class="bg-amber-700 hover:bg-amber-600 text-white text-sm px-3 py-1 rounded glow select-mystery" data-mystery="${id}">
+                        Investigate <i class="fas fa-search ml-1"></i>
+                    </button>
+                `;
+          mysteriesList.appendChild(mysteryCard);
+        }
+
+        // Add event listeners to all mystery buttons
+        document.querySelectorAll(".select-mystery").forEach((button) => {
+          button.addEventListener("click", function () {
+            const mysteryId = this.getAttribute("data-mystery");
+            selectMystery(mysteryId);
+          });
+        });
+      }
+
+      function selectMystery(mysteryId) {
+        gameState.currentMystery = mysteryId;
+        gameState.discoveredClues = [];
+        gameState.attemptsLeft = 3;
+        saveGameState();
+
+        renderMystery();
+      }
+
+      function renderMystery() {
+        const mystery = mysteries[gameState.currentMystery];
+
+        // Update main mystery info
+        mysteryTitle.textContent = mystery.title;
+        mysteryNarrative.innerHTML = `<p>${mystery.narrative}</p>`;
+        attemptsLeftDisplay.textContent = gameState.attemptsLeft;
+
+        // Render locations
+        locationsList.innerHTML = "";
+        mystery.locations.forEach((location) => {
+          const isDiscovered = gameState.discoveredClues.includes(
+            `location:${location.name}`
+          );
+          const locationBtn = document.createElement("button");
+          locationBtn.className = `w-full text-left p-2 rounded ${
+            isDiscovered
+              ? "bg-gray-700 text-amber-400"
+              : "bg-gray-800 hover:bg-gray-700 text-gray-300"
+          } glow transition-colors`;
+          locationBtn.innerHTML = `
+                    <i class="fas fa-map-marker-alt mr-2"></i> ${location.name}
+                    ${
+                      isDiscovered
+                        ? `<span class="float-right text-xs bg-amber-600 px-2 py-1 rounded-full">CLUE FOUND</span>`
+                        : ""
+                    }
+                `;
+          locationBtn.addEventListener("click", () =>
+            investigate("location", location.name, location.clue)
+          );
+          locationsList.appendChild(locationBtn);
+        });
+
+        // Render objects
+        objectsList.innerHTML = "";
+        mystery.objects.forEach((object) => {
+          const isDiscovered = gameState.discoveredClues.includes(
+            `object:${object.name}`
+          );
+          const objectBtn = document.createElement("button");
+          objectBtn.className = `w-full text-left p-2 rounded ${
+            isDiscovered
+              ? "bg-gray-700 text-amber-400"
+              : "bg-gray-800 hover:bg-gray-700 text-gray-300"
+          } glow transition-colors`;
+          objectBtn.innerHTML = `
+                    <i class="fas fa-box-open mr-2"></i> ${object.name}
+                    ${
+                      isDiscovered
+                        ? `<span class="float-right text-xs bg-amber-600 px-2 py-1 rounded-full">CLUE FOUND</span>`
+                        : ""
+                    }
+                `;
+          objectBtn.addEventListener("click", () =>
+            investigate("object", object.name, object.clue)
+          );
+          objectsList.appendChild(objectBtn);
+        });
+
+        // Render suspects
+        suspectsList.innerHTML = "";
+        mystery.suspects.forEach((suspect) => {
+          const isDiscovered = gameState.discoveredClues.includes(
+            `suspect:${suspect.name}`
+          );
+          const suspectBtn = document.createElement("button");
+          suspectBtn.className = `w-full text-left p-2 rounded ${
+            isDiscovered
+              ? "bg-gray-700 text-amber-400"
+              : "bg-gray-800 hover:bg-gray-700 text-gray-300"
+          } glow transition-colors`;
+          suspectBtn.innerHTML = `
+                    <i class="fas fa-user mr-2"></i> ${suspect.name}
+                    ${
+                      isDiscovered
+                        ? `<span class="float-right text-xs bg-amber-600 px-2 py-1 rounded-full">CLUE FOUND</span>`
+                        : ""
+                    }
+                `;
+          suspectBtn.addEventListener("click", () =>
+            investigate("suspect", suspect.name, suspect.clue)
+          );
+          suspectsList.appendChild(suspectBtn);
+        });
+
+        // Show the mystery area
+        mysteriesList.parentElement.classList.add("hidden");
+        mysteryArea.classList.remove("hidden");
+        resultsArea.classList.add("hidden");
+      }
+
+      function investigate(type, name, clue) {
+        const clueId = `${type}:${name}`;
+
+        // Check if already discovered
+        if (gameState.discoveredClues.includes(clueId)) {
+          return;
+        }
+
+        // Add to discovered clues
+        gameState.discoveredClues.push(clueId);
+        gameState.totalAttempts++;
+        gameState.attemptsLeft--;
+
+        // Update UI
+        attemptsLeftDisplay.textContent = gameState.attemptsLeft;
+        totalAttemptsDisplay.textContent = gameState.totalAttempts;
+
+        // Show results
+        resultsArea.classList.remove("hidden");
+        resultsContent.innerHTML = `
+                <div class="mb-4">
+                    <h4 class="font-bold text-amber-400">${name}</h4>
+                    <p class="mt-1">${clue}</p>
+                </div>
+                <div class="text-sm text-gray-400">
+                    <p><i class="fas fa-lightbulb mr-1"></i> Clue added to your notebook</p>
+                    <p><i class="fas fa-clock mr-1"></i> Attempts remaining: ${gameState.attemptsLeft}</p>
+                </div>
+            `;
+
+        // Check if enough clues to solve
+        const mystery = mysteries[gameState.currentMystery];
+        if (
+          gameState.discoveredClues.length >= mystery.solution.requiredClues
+        ) {
+          setTimeout(() => {
+            showSolution(mystery);
+          }, 1500);
+        } else if (gameState.attemptsLeft <= 0) {
+          setTimeout(() => {
+            showFailure(mystery);
+          }, 1500);
+        }
+
+        // Re-render the current mystery to update buttons
+        renderMystery();
+        saveGameState();
+      }
+
+      function showSolution(mystery) {
+        gameState.casesSolved++;
+        casesSolvedDisplay.textContent = gameState.casesSolved;
+
+        solutionText.innerHTML = `
+                <p class="mb-4">You've cracked the case!</p>
+                <p class="mb-2"><strong>Culprit:</strong> ${mystery.solution.culprit}</p>
+                <p><strong>Method:</strong> ${mystery.solution.method}</p>
+            `;
+
+        solvedModal.classList.remove("hidden");
+        saveGameState();
+      }
+
+      function showFailure(mystery) {
+        solutionText.innerHTML = `
+                <p class="mb-4 text-red-300">You've run out of attempts!</p>
+                <p class="mb-2"><strong>The solution was:</strong> ${mystery.solution.culprit}</p>
+                <p><strong>Method:</strong> ${mystery.solution.method}</p>
+                <p class="mt-4 text-gray-400">Better luck on your next case...</p>
+            `;
+
+        solvedModal.classList.remove("hidden");
+        saveGameState();
+      }
+
+      function closeSolvedModal() {
+        solvedModal.classList.add("hidden");
+        showMysteriesList();
+      }
+
+      function showMysteriesList() {
+        mysteryArea.classList.add("hidden");
+        mysteriesList.parentElement.classList.remove("hidden");
+        renderMysteriesList();
+      }
+
+      function resetCurrentMystery() {
+        if (gameState.currentMystery) {
+          gameState.discoveredClues = [];
+          gameState.attemptsLeft = 3;
+          saveGameState();
+          renderMystery();
+        }
+      }
+
+      function saveNotebook() {
+        gameState.notebook = notebookInput.value;
+        notebookEntry.textContent = gameState.notebook || "No notes yet...";
+        saveGameState();
+      }
+
+      function saveGameState() {
+        localStorage.setItem("noirDetectiveGame", JSON.stringify(gameState));
+      }
+
+      // Initialize the game when the page loads
+      window.addEventListener("DOMContentLoaded", initGame);
+    </script>
+  </body>
+</html>
