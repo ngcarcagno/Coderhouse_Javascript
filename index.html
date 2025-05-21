@@ -3,53 +3,284 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simulador de Misterios</title>
+    <title>Simulador de Misterios Noir</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
     <link rel="stylesheet" href="css/style.css" />
   </head>
-  <body>
-    <div class="container">
-      <h1>Simulador de Misterios</h1>
+  <body class="min-h-screen flex flex-col items-center p-4">
+    <div id="welcome-section" class="w-full max-w-4xl mt-10 slide-in">
+      <div
+        class="p-8 rounded-lg parchment shadow-move relative overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-20"
+        ></div>
+        <div class="relative z-10">
+          <div class="flex items-center justify-center mb-8">
+            <i class="fas fa-search text-amber-600 text-4xl mr-4 flicker"></i>
+            <h1
+              class="title-font text-4xl md:text-5xl font-bold text-amber-600 tracking-wider"
+            >
+              MISTERIOS DE DETECTIVE NOIR
+            </h1>
+          </div>
 
-      <!-- Sección de bienvenida y nombre del detective -->
-      <div id="welcome-section">
-        <p>¡Bienvenido, detective! Ingresa tu nombre para comenzar:</p>
-        <input
-          type="text"
-          id="detective-name-input"
-          placeholder="Nombre de detective"
-        />
-        <p id="error-message" style="color: red; display: none">
-          Debe ingresarse algo
-        </p>
-        <p id="welcome-message" style="display: none"></p>
-        <button id="start-game">Comenzar</button>
-      </div>
+          <div id="welcome-message-container" class="hidden mb-8">
+            <p
+              id="welcome-text"
+              class="text-xl text-gray-300 mb-4 typewriter"
+            ></p>
+            <div class="flex justify-center">
+              <button
+                id="continue-btn"
+                class="bg-amber-700 hover:bg-amber-600 text-white px-6 py-2 rounded-md glow transition-all duration-300"
+              >
+                Continuar tu Investigación
+                <i class="fas fa-arrow-right ml-2"></i>
+              </button>
+            </div>
+          </div>
 
-      <!-- Sección principal del juego (oculta al inicio) -->
-      <div id="game-section" style="display: none">
-        <div id="detective-info">
-          <p>Detective: <span id="detective-name"></span></p>
-          <p>Casos resueltos: <span id="casos-resueltos">0</span></p>
-          <p>Intentos totales: <span id="intentos-totales">0</span></p>
-        </div>
+          <div id="name-form" class="mb-8">
+            <p class="text-gray-300 mb-6 text-center text-lg">
+              Ingresa tu nombre para comenzar tu viaje de detective:
+            </p>
+            <div class="flex flex-col items-center">
+              <div class="relative w-full max-w-md">
+                <input
+                  type="text"
+                  id="detective-name-input"
+                  placeholder="Tu nombre de detective..."
+                  class="w-full bg-gray-900 border border-gray-700 text-gray-200 px-4 py-3 rounded focus:outline-none focus:ring-2 focus:ring-amber-600 focus:border-transparent"
+                />
+                <div
+                  id="error-message"
+                  class="hidden absolute -bottom-6 left-0 text-red-400 text-sm mt-1"
+                >
+                  <i class="fas fa-exclamation-circle mr-1"></i> Debe ingresarse
+                  algo
+                </div>
+              </div>
+              <button
+                id="start-game"
+                class="mt-8 bg-amber-700 hover:bg-amber-600 text-white px-6 py-2 rounded-md glow transition-all duration-300"
+              >
+                Comenzar Investigación <i class="fas fa-search ml-2"></i>
+              </button>
+            </div>
+          </div>
 
-        <div id="misterios-list">
-          <h2>Misterios Pendientes</h2>
-          <ul id="misterios"></ul>
-        </div>
-
-        <div id="misterio-actual" style="display: none">
-          <h2 id="misterio-nombre"></h2>
-          <p id="misterio-narrativa"></p>
-          <p id="intentos-restantes"></p>
-          <div id="opciones-lugares"></div>
-          <div id="opciones-objetos" style="display: none"></div>
-          <div id="opciones-sospechosos" style="display: none"></div>
-          <p id="resultado"></p>
-          <button id="reiniciar">Reiniciar Misterio</button>
+          <div class="border-t border-gray-700 pt-6 mt-8">
+            <h2 class="title-font text-xl text-amber-500 mb-4">
+              Casos Destacados
+            </h2>
+            <div
+              id="featured-cases"
+              class="grid grid-cols-1 md:grid-cols-3 gap-4"
+            ></div>
+          </div>
         </div>
       </div>
     </div>
+
+    <div id="game-section" class="hidden w-full max-w-6xl mt-10">
+      <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div class="lg:col-span-1 parchment p-6 rounded-lg h-fit">
+          <div class="flex items-center mb-6">
+            <div
+              class="w-12 h-12 rounded-full bg-gray-700 flex items-center justify-center mr-4"
+            >
+              <i class="fas fa-user-secret text-2xl text-amber-500"></i>
+            </div>
+            <div>
+              <h2
+                id="detective-name-display"
+                class="title-font text-xl text-amber-400"
+              ></h2>
+              <p class="text-gray-400 text-sm">Investigador Privado</p>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-700 pt-4 mb-4">
+            <div class="flex justify-between mb-2">
+              <span class="text-gray-400">Casos Resueltos:</span>
+              <span id="casos-resueltos" class="text-amber-400">0</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-gray-400">Intentos Totales:</span>
+              <span id="intentos-totales" class="text-amber-400">0</span>
+            </div>
+          </div>
+
+          <div class="border-t border-gray-700 pt-4">
+            <h3 class="title-font text-lg text-amber-500 mb-3">Tu Libreta</h3>
+            <div class="bg-gray-900 bg-opacity-50 p-3 rounded">
+              <p id="notebook-entry" class="text-gray-300 text-sm italic">
+                Aún no hay notas...
+              </p>
+            </div>
+            <textarea
+              id="notebook-input"
+              class="w-full mt-2 bg-gray-900 bg-opacity-50 text-gray-300 p-2 text-sm rounded border border-gray-700 focus:outline-none focus:ring-1 focus:ring-amber-500"
+              placeholder="Añade tus notas aquí..."
+            ></textarea>
+            <button
+              id="save-notes"
+              class="mt-2 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm px-3 py-1 rounded glow"
+            >
+              <i class="fas fa-save mr-1"></i> Guardar Notas
+            </button>
+          </div>
+        </div>
+
+        <div class="lg:col-span-3">
+          <div
+            id="misterios-list-container"
+            class="parchment p-6 rounded-lg mb-6"
+          >
+            <h2
+              class="title-font text-2xl text-amber-500 mb-4 flex items-center"
+            >
+              <i class="fas fa-folder-open mr-3"></i> Casos Activos
+            </h2>
+            <div
+              id="misterios"
+              class="grid grid-cols-1 md:grid-cols-2 gap-4"
+            ></div>
+          </div>
+
+          <div id="misterio-actual" class="hidden parchment p-6 rounded-lg">
+            <div class="flex justify-between items-center mb-6">
+              <h2
+                id="misterio-nombre"
+                class="title-font text-2xl text-amber-500"
+              ></h2>
+              <div class="flex items-center">
+                <span class="text-gray-400 mr-2">Intentos restantes:</span>
+                <span
+                  id="intentos-restantes-display"
+                  class="bg-red-900 text-red-200 px-2 py-1 rounded text-sm"
+                  >3</span
+                >
+              </div>
+            </div>
+
+            <div
+              id="misterio-narrativa"
+              class="bg-gray-900 bg-opacity-50 p-4 rounded mb-6 text-gray-300"
+            ></div>
+
+            <div
+              id="pista-actual"
+              class="bg-gray-900 bg-opacity-60 p-3 rounded mb-4 text-amber-300 italic"
+              style="display: none"
+            ></div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+              <div>
+                <h3
+                  class="title-font text-lg text-amber-400 mb-3 flex items-center"
+                >
+                  <i class="fas fa-map-marker-alt mr-2"></i> Lugares
+                </h3>
+                <div id="opciones-lugares" class="space-y-2"></div>
+              </div>
+              <div>
+                <h3
+                  class="title-font text-lg text-amber-400 mb-3 flex items-center"
+                >
+                  <i class="fas fa-box-open mr-2"></i> Objetos
+                </h3>
+                <div
+                  id="opciones-objetos"
+                  class="space-y-2"
+                  style="display: none"
+                ></div>
+              </div>
+              <div>
+                <h3
+                  class="title-font text-lg text-amber-400 mb-3 flex items-center"
+                >
+                  <i class="fas fa-user mr-2"></i> Sospechosos
+                </h3>
+                <div
+                  id="opciones-sospechosos"
+                  class="space-y-2"
+                  style="display: none"
+                ></div>
+              </div>
+            </div>
+
+            <div
+              id="resultado-area"
+              class="hidden bg-gray-900 bg-opacity-70 border-l-4 border-amber-500 p-4 rounded mb-6"
+            >
+              <h3 class="title-font text-lg text-amber-400 mb-2">
+                Resultados de la Investigación
+              </h3>
+              <div id="resultado" class="text-gray-300"></div>
+            </div>
+
+            <div class="flex justify-between">
+              <button
+                id="back-to-cases"
+                class="bg-gray-700 hover:bg-gray-600 text-gray-300 px-4 py-2 rounded glow"
+              >
+                <i class="fas fa-arrow-left mr-2"></i> Volver a Casos
+              </button>
+              <button
+                id="reiniciar-misterio-btn"
+                class="bg-red-900 hover:bg-red-800 text-red-200 px-4 py-2 rounded glow"
+              >
+                <i class="fas fa-undo mr-2"></i> Reiniciar Misterio
+              </button>
+            </div>
+          </div>
+
+          <div
+            id="solved-modal"
+            class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50"
+          >
+            <div
+              class="bg-gray-900 border-2 border-amber-600 rounded-lg p-8 max-w-md w-full relative slide-in"
+            >
+              <button
+                id="close-modal"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white"
+              >
+                <i class="fas fa-times"></i>
+              </button>
+              <div class="text-center">
+                <div id="modal-icon" class="text-6xl text-amber-500 mb-4"></div>
+                <h3
+                  id="modal-title"
+                  class="title-font text-2xl text-amber-400 mb-2"
+                >
+                  {Título del Modal}
+                </h3>
+                <p id="modal-solution-text" class="text-gray-300 mb-6"></p>
+                <button
+                  id="next-case-btn"
+                  class="bg-amber-700 hover:bg-amber-600 text-white px-6 py-2 rounded-md glow"
+                >
+                  Continuar <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer class="mt-12 mb-6 text-gray-500 text-sm">
+      <p>© 2023 Misterios de Detective Noir. Todos los derechos reservados.</p>
+    </footer>
+
+    <script src="js/misteriosData.js" type="module"></script>
     <script src="js/DetectiveSimulator.js" type="module"></script>
   </body>
 </html>
