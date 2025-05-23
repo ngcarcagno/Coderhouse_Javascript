@@ -4,27 +4,32 @@ class AudioManager {
     this.backgroundMusic = new Howl({
       src: ["data/sounds/music_MainBackground_Loop.ogg"],
       loop: true,
-      volume: 0.5,
+      volume: 0.7,
     });
 
     this.cluePositive = new Howl({
       src: ["data/sounds/sfx_CluePositive.ogg"],
-      volume: 0.5,
+      volume: 0.7,
     });
 
     this.clueNegative = new Howl({
       src: ["data/sounds/sfx_ClueNegative.ogg"],
-      volume: 0.5,
+      volume: 0.7,
     });
 
     this.mysterySuccess = new Howl({
       src: ["data/sounds/sfx_MisterySuccess.ogg"],
-      volume: 0.5,
+      volume: 0.7,
     });
 
     this.mysteryFail = new Howl({
       src: ["data/sounds/sfx_MisteryFail.ogg"],
-      volume: 0.5,
+      volume: 0.7,
+    });
+
+    this.welcomeMessage = new Howl({
+      src: ["data/sounds/sfx_WelcomeMessage.ogg"],
+      volume: 0.7,
     });
 
     // Track playback state
@@ -34,9 +39,7 @@ class AudioManager {
     this.isMusicPlayingVisibilityCache = false;
 
     // Add visibility change listener
-    document.addEventListener("visibilitychange", () =>
-      this.handleVisibilityChange()
-    );
+    document.addEventListener("visibilitychange", () => this.handleVisibilityChange());
   }
 
   // Play background music
@@ -84,9 +87,14 @@ class AudioManager {
     this.mysteryFail.play();
   }
 
+  playWelcomeMessage() {
+    this.welcomeMessage.play();
+  }
+
   // Set master volume for all sounds
   setMasterVolume(volume) {
     this.backgroundMusic.volume(volume);
+    this.welcomeMessage.volume(volume);
     this.cluePositive.volume(volume);
     this.clueNegative.volume(volume);
     this.mysterySuccess.volume(volume);

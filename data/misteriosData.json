@@ -9,24 +9,9 @@
       "imageUrl": "data/images/MuseoSilencioso.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/01/01/mystery-background-loop.mp3",
       "opciones": {
-        "lugares": [
-          "Sala de exposiciones",
-          "Cafetería",
-          "Tienda de regalos",
-          "Baño"
-        ],
-        "objetos": [
-          "Estatua dorada",
-          "Cuadro famoso",
-          "Joya antigua",
-          "Documento histórico"
-        ],
-        "sospechosos": [
-          "Guía turístico",
-          "Visitante",
-          "Guardia de seguridad",
-          "Director del museo"
-        ]
+        "lugares": ["Sala de exposiciones", "Cafetería", "Tienda de regalos", "Baño"],
+        "objetos": ["Estatua dorada", "Cuadro famoso", "Joya antigua", "Documento histórico"],
+        "sospechosos": ["Guía turístico", "Visitante", "Guardia de seguridad", "Director del museo"]
       },
       "pistas": {
         "lugar": "El lugar del crimen es donde el silencio es más profundo, pero algo lo interrumpe.",
@@ -44,12 +29,7 @@
       "musicUrl": "https://cdn.pixabay.com/audio/2023/01/02/haunted-mansion-loop.mp3",
       "opciones": {
         "lugares": ["Sala de baile", "Biblioteca", "Jardín", "Cocina"],
-        "objetos": [
-          "Collar de diamantes",
-          "Pistola antigua",
-          "Libro raro",
-          "Botella de vino"
-        ],
+        "objetos": ["Collar de diamantes", "Pistola antigua", "Libro raro", "Botella de vino"],
         "sospechosos": ["Invitado misterioso", "Anfitrión", "Sirviente", "Chef"]
       },
       "pistas": {
@@ -67,18 +47,8 @@
       "imageUrl": "data/images/LaboratorioProhibido.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/01/03/lab-ambient-loop.mp3",
       "opciones": {
-        "lugares": [
-          "Sala de experimentos",
-          "Oficina",
-          "Almacén",
-          "Sala de control"
-        ],
-        "objetos": [
-          "Frasco químico",
-          "Computadora",
-          "Herramienta quirúrgica",
-          "Diagrama técnico"
-        ],
+        "lugares": ["Sala de experimentos", "Oficina", "Almacén", "Sala de control"],
+        "objetos": ["Frasco químico", "Computadora", "Herramienta quirúrgica", "Diagrama técnico"],
         "sospechosos": ["Científico jefe", "Asistente", "Técnico", "Guardia"]
       },
       "pistas": {
@@ -96,24 +66,9 @@
       "imageUrl": "data/images/TraicionCorona.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/01/04/castle-mystery-loop.mp3",
       "opciones": {
-        "lugares": [
-          "Salón del trono",
-          "Mazmorras",
-          "Jardines reales",
-          "Torre del reloj"
-        ],
-        "objetos": [
-          "Daga envenenada",
-          "Cetro real",
-          "Pergamino sellado",
-          "Copa de oro"
-        ],
-        "sospechosos": [
-          "Consejero real",
-          "Rey",
-          "Guardia real",
-          "Noble visitante"
-        ]
+        "lugares": ["Salón del trono", "Mazmorras", "Jardines reales", "Torre del reloj"],
+        "objetos": ["Daga envenenada", "Cetro real", "Pergamino sellado", "Copa de oro"],
+        "sospechosos": ["Consejero real", "Rey", "Guardia real", "Noble visitante"]
       },
       "pistas": {
         "lugar": "El crimen ocurrió donde el poder se siente más pesado.",
@@ -130,18 +85,8 @@
       "imageUrl": "data/images/UltimoPasajeroDelTrenNocturno.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/01/05/train-ambient-loop.mp3",
       "opciones": {
-        "lugares": [
-          "Vagón de carga",
-          "Comedor",
-          "Cabina del conductor",
-          "Vagón de pasajeros"
-        ],
-        "objetos": [
-          "Maleta cerrada",
-          "Boleto rasgado",
-          "Reloj de bolsillo",
-          "Linterna rota"
-        ],
+        "lugares": ["Vagón de carga", "Comedor", "Cabina del conductor", "Vagón de pasajeros"],
+        "objetos": ["Maleta cerrada", "Boleto rasgado", "Reloj de bolsillo", "Linterna rota"],
         "sospechosos": ["Revisor", "Pasajero solitario", "Cocinero", "Mecánico"]
       },
       "pistas": {
@@ -159,24 +104,9 @@
       "imageUrl": "data/images/BiblotecaSumergida.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/02/10/submerged-library-loop.mp3",
       "opciones": {
-        "lugares": [
-          "Sección de manuscritos",
-          "Sala de lectura",
-          "Depósito de mapas",
-          "Vestíbulo principal"
-        ],
-        "objetos": [
-          "Tomo prohibido",
-          "Mapa antiguo",
-          "Pluma de plata",
-          "Candil apagado"
-        ],
-        "sospechosos": [
-          "Bibliotecario nocturno",
-          "Investigador visitante",
-          "Guardia de seguridad",
-          "Conserje"
-        ]
+        "lugares": ["Sección de manuscritos", "Sala de lectura", "Depósito de mapas", "Vestíbulo principal"],
+        "objetos": ["Tomo prohibido", "Mapa antiguo", "Pluma de plata", "Candil apagado"],
+        "sospechosos": ["Bibliotecario nocturno", "Investigador visitante", "Guardia de seguridad", "Conserje"]
       },
       "pistas": {
         "lugar": "El agua dejó huellas que llevan al rincón más olvidado.",
@@ -193,24 +123,9 @@
       "imageUrl": "data/images/ObservatorioSolitario.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/02/15/observatory-ambient-loop.mp3",
       "opciones": {
-        "lugares": [
-          "Cúpula principal",
-          "Sala de control",
-          "Jardín de meteoritos",
-          "Cafetería"
-        ],
-        "objetos": [
-          "Lente principal",
-          "Planisferio antiguo",
-          "Registro de observaciones",
-          "Linterna de mano"
-        ],
-        "sospechosos": [
-          "Astrónomo residente",
-          "Estudiante de verano",
-          "Guía turístico",
-          "Técnico de sonido"
-        ]
+        "lugares": ["Cúpula principal", "Sala de control", "Jardín de meteoritos", "Cafetería"],
+        "objetos": ["Lente principal", "Planisferio antiguo", "Registro de observaciones", "Linterna de mano"],
+        "sospechosos": ["Astrónomo residente", "Estudiante de verano", "Guía turístico", "Técnico de sonido"]
       },
       "pistas": {
         "lugar": "Solo ahí se sentía el zumbido de los engranajes.",
@@ -227,24 +142,9 @@
       "imageUrl": "data/images/ElSilencioDelFaroAbandonado.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/02/20/lighthouse-mystery-loop.mp3",
       "opciones": {
-        "lugares": [
-          "Sala de máquinas",
-          "Galería de luz",
-          "Escalera de caracol",
-          "Dormitorio"
-        ],
-        "objetos": [
-          "Linterna antigua",
-          "Registro de guardias",
-          "Reloj de cuerda",
-          "Catalejo"
-        ],
-        "sospechosos": [
-          "Farero jubilado",
-          "Guardia costero",
-          "Visitante errante",
-          "Marinero"
-        ]
+        "lugares": ["Sala de máquinas", "Galería de luz", "Escalera de caracol", "Dormitorio"],
+        "objetos": ["Linterna antigua", "Registro de guardias", "Reloj de cuerda", "Catalejo"],
+        "sospechosos": ["Farero jubilado", "Guardia costero", "Visitante errante", "Marinero"]
       },
       "pistas": {
         "lugar": "El ruido de la maquinaria cesó justo antes del incidente.",
@@ -261,24 +161,9 @@
       "imageUrl": "data/images/RetratoQueSusurra.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/02/25/whispering-portrait-loop.mp3",
       "opciones": {
-        "lugares": [
-          "Salón de la chimenea",
-          "Galería de retratos",
-          "Biblioteca",
-          "Pasillo principal"
-        ],
-        "objetos": [
-          "Medallón de familia",
-          "Libro de cuentos",
-          "Guante de seda",
-          "Copa de cristal"
-        ],
-        "sospechosos": [
-          "Ama de llaves",
-          "Mayordomo",
-          "Visita de la tarde",
-          "Niñera"
-        ]
+        "lugares": ["Salón de la chimenea", "Galería de retratos", "Biblioteca", "Pasillo principal"],
+        "objetos": ["Medallón de familia", "Libro de cuentos", "Guante de seda", "Copa de cristal"],
+        "sospechosos": ["Ama de llaves", "Mayordomo", "Visita de la tarde", "Niñera"]
       },
       "pistas": {
         "lugar": "El frío es más intenso donde las llamas no llegan.",
@@ -295,24 +180,9 @@
       "imageUrl": "data/images/TrenFantasmaDelDesierto.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/03/01/desert-train-loop.mp3",
       "opciones": {
-        "lugares": [
-          "Vagón de carga trasero",
-          "Cabina del maquinista",
-          "Pasillo central",
-          "Cisterna de agua"
-        ],
-        "objetos": [
-          "Cofre sellado",
-          "Documento cifrado",
-          "Linterna de aceite",
-          "Carta sin remitente"
-        ],
-        "sospechosos": [
-          "Maquinista fantasma",
-          "Aventurero solitario",
-          "Contrabandista",
-          "Ingeniero"
-        ]
+        "lugares": ["Vagón de carga trasero", "Cabina del maquinista", "Pasillo central", "Cisterna de agua"],
+        "objetos": ["Cofre sellado", "Documento cifrado", "Linterna de aceite", "Carta sin remitente"],
+        "sospechosos": ["Maquinista fantasma", "Aventurero solitario", "Contrabandista", "Ingeniero"]
       },
       "pistas": {
         "lugar": "El silencio es absoluto donde no llega el eco.",
