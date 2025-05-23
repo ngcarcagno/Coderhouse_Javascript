@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Simulador de Misterios Noir</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -111,7 +112,7 @@
               <span id="casos-resueltos" class="text-amber-400">0</span>
             </div>
             <div class="flex justify-between">
-              <span class="text-gray-400">Intentos Totales:</span>
+              <span class="text-gray-400">Errores Totales:</span>
               <span id="intentos-totales" class="text-amber-400">0</span>
             </div>
           </div>
@@ -134,6 +135,24 @@
             >
               <i class="fas fa-save mr-1"></i> Guardar Notas
             </button>
+          </div>
+
+          <div id="audio-controls" class="mb-8 flex items-center space-x-4">
+            <button
+              id="audio-toggle"
+              class="bg-amber-700 hover:bg-amber-600 text-white font-bold py-2 px-4 rounded glow"
+            >
+              <i class="fas fa-play"></i>
+            </button>
+            <input
+              id="audio-volume"
+              type="range"
+              min="0"
+              max="1"
+              step="0.01"
+              value="0.5"
+              class="w-32 accent-amber-500"
+            />
           </div>
         </div>
 
@@ -168,18 +187,20 @@
                 >
               </div>
             </div>
-
+            <img
+              id="misterio-imagen"
+              class="w-full h-64 object-cover rounded-lg mb-4 shadow-move"
+              alt="Misterio"
+            />
             <div
               id="misterio-narrativa"
               class="bg-gray-900 bg-opacity-50 p-4 rounded mb-6 text-gray-300"
             ></div>
-
             <div
               id="pista-actual"
               class="bg-gray-900 bg-opacity-60 p-3 rounded mb-4 text-amber-300 italic"
               style="display: none"
             ></div>
-
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
               <div>
                 <h3
@@ -214,7 +235,6 @@
                 ></div>
               </div>
             </div>
-
             <div
               id="resultado-area"
               class="hidden bg-gray-900 bg-opacity-70 border-l-4 border-amber-500 p-4 rounded mb-6"
@@ -224,7 +244,6 @@
               </h3>
               <div id="resultado" class="text-gray-300"></div>
             </div>
-
             <div class="flex justify-between">
               <button
                 id="back-to-cases"
@@ -280,7 +299,6 @@
       <p>© 2023 Misterios de Detective Noir. Todos los derechos reservados.</p>
     </footer>
 
-    <script src="js/misteriosData.js" type="module"></script>
     <script src="js/DetectiveSimulator.js" type="module"></script>
   </body>
 </html>

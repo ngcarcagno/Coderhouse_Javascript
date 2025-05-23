@@ -1,15 +1,29 @@
-import { misterios } from "./misteriosData.js";
+let misterios = [];
+let backgroundAudio = null; // Howler.js instance for background music
+let savedDetectiveName = ""; // Added to store the name found in localStorage
 
-// Estado del juego (similar a gameState de NewIndex, pero adaptado)
+async function loadMisterios() {
+  try {
+    const response = await fetch("../data/misteriosData.json");
+    if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    const data = await response.json();
+    misterios = data.misterios;
+  } catch (error) {
+    console.error("Error loading misteriosData.json:", error);
+  }
+}
+
+// Estado del juego
 let gameState = {
   nombreDetective: "",
   casosResueltos: 0,
-  intentosTotalesGlobal: 0, // Intentos totales en todos los juegos
-  misterioActualData: null, // Objeto del misterio actual de misteriosData.js
+  intentosTotalesGlobal: 0,
+  misterioActualData: null,
   intentosRestantesMisterio: 3,
-  libreta: "",
-  misteriosDisponibles: [], // Copia de la lista de misterios para poder removerlos
-  etapaActual: "", // 'lugares', 'objetos', 'sospechosos'
+  libreta: [], // Changed to an array to store multiple notes
+  misteriosDisponibles: [],
+  etapaActual: "",
+  isMusicPlaying: false, // Track audio playback state
 };
 
 // DOM Elements
@@ -23,39 +37,32 @@ const welcomeText = document.getElementById("welcome-text");
 const continueBtn = document.getElementById("continue-btn");
 const detectiveNameInput = document.getElementById("detective-name-input");
 const errorMessage = document.getElementById("error-message");
-const startGameBtn = document.getElementById("start-game"); // Renombrado para claridad
-
+const startGameBtn = document.getElementById("start-game");
 const detectiveNameDisplay = document.getElementById("detective-name-display");
 const casosResueltosDisplay = document.getElementById("casos-resueltos");
 const intentosTotalesDisplay = document.getElementById("intentos-totales");
-
 const misteriosListContainer = document.getElementById(
   "misterios-list-container"
-); // Contenedor de la lista de misterios
-const misteriosListDiv = document.getElementById("misterios"); // El div que contendrá las tarjetas de misterio
-
+);
+const misteriosListDiv = document.getElementById("misterios");
 const misterioActualDiv = document.getElementById("misterio-actual");
 const misterioNombreDisplay = document.getElementById("misterio-nombre");
+const misterioImagen = document.getElementById("misterio-imagen");
 const misterioNarrativaDisplay = document.getElementById("misterio-narrativa");
 const intentosRestantesDisplay = document.getElementById(
   "intentos-restantes-display"
 );
 const pistaActualDisplay = document.getElementById("pista-actual");
-
 const opcionesLugaresDiv = document.getElementById("opciones-lugares");
 const opcionesObjetosDiv = document.getElementById("opciones-objetos");
 const opcionesSospechososDiv = document.getElementById("opciones-sospechosos");
-
 const resultadoAreaDiv = document.getElementById("resultado-area");
-const resultadoDisplay = document.getElementById("resultado"); // Donde se muestra el texto del resultado
-
+const resultadoDisplay = document.getElementById("resultado");
 const backToCasesBtn = document.getElementById("back-to-cases");
 const reiniciarMisterioBtn = document.getElementById("reiniciar-misterio-btn");
-
 const notebookEntry = document.getElementById("notebook-entry");
 const notebookInput = document.getElementById("notebook-input");
 const saveNotesBtn = document.getElementById("save-notes");
-
 const solvedModal = document.getElementById("solved-modal");
 const modalIcon = document.getElementById("modal-icon");
 const modalTitle = document.getElementById("modal-title");
@@ -63,27 +70,124 @@ const modalSolutionText = document.getElementById("modal-solution-text");
 const closeModalBtn = document.getElementById("close-modal");
 const nextCaseBtn = document.getElementById("next-case-btn");
 const featuredCasesDiv = document.getElementById("featured-cases");
+const audioToggleBtn = document.getElementById("audio-toggle");
+const audioVolumeInput = document.getElementById("audio-volume");
+
+// Function to shuffle an array (Fisher-Yates algorithm)
+function shuffleArray(array) {
+  const shuffled = [...array]; // Create a copy to avoid modifying the original
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]; // Swap elements
+  }
+  return shuffled;
+}
 
 // Inicializar el juego
-document.addEventListener("DOMContentLoaded", initGame);
+document.addEventListener("DOMContentLoaded", async () => {
+  await loadMisterios();
+  initGame();
+});
 
-function initGame() {
+async function initGame() {
   const savedState = localStorage.getItem("simuladorMisteriosState_v2");
   if (savedState) {
-    gameState = JSON.parse(savedState);
-    // Asegurarse de que misteriosDisponibles se carga correctamente si no está en el estado guardado o está vacío
-    if (
-      !gameState.misteriosDisponibles ||
-      gameState.misteriosDisponibles.length === 0
-    ) {
-      gameState.misteriosDisponibles = [...misterios]; // Cargar lista fresca si no hay progreso guardado o se completaron todos
+    const parsedState = JSON.parse(savedState);
+    savedDetectiveName = parsedState.nombreDetective || "";
+    if (savedDetectiveName) {
+      // Show modal to ask if user wants to continue
+      const modal = document.createElement("div");
+      modal.id = "reset-modal";
+      modal.className =
+        "fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50";
+      modal.innerHTML = `
+        <div class="bg-gray-900 border-2 border-amber-600 rounded-lg p-8 max-w-md w-full relative slide-in">
+          <div class="text-center">
+            <h3 class="title-font text-2xl text-amber-400 mb-4">
+              ¿Continuar Investigación?
+            </h3>
+            <p class="text-gray-300 mb-6">
+              Se encontró una investigación previa de ${savedDetectiveName}. ¿Deseas continuar con esta investigación?
+            </p>
+            <p class="text-gray-500 italic text-sm mt-2">
+              (En caso de que elijas "No", se reiniciará la investigación y se perderán los datos guardados.)
+            </p>
+            <div class="flex justify-center space-x-4">
+              <button id="continue-investigation" class="bg-amber-700 hover:bg-amber-600 text-white px-6 py-2 rounded-md glow">
+                Sí, Continuar
+              </button>
+              <button id="reset-investigation" class="bg-red-700 hover:bg-red-600 text-white px-6 py-2 rounded-md glow">
+                No, Empezar de Nuevo
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(modal);
+
+      document
+        .getElementById("continue-investigation")
+        .addEventListener("click", () => {
+          gameState = parsedState;
+          if (
+            !gameState.misteriosDisponibles ||
+            gameState.misteriosDisponibles.length === 0
+          ) {
+            gameState.misteriosDisponibles = [...misterios];
+          }
+          // Ensure libreta is an array, even if loaded as a string
+          if (!Array.isArray(gameState.libreta)) {
+            gameState.libreta = gameState.libreta ? [gameState.libreta] : [];
+          }
+          modal.remove();
+          continueGameInitialization();
+        });
+
+      document
+        .getElementById("reset-investigation")
+        .addEventListener("click", () => {
+          localStorage.removeItem("simuladorMisteriosState_v2");
+          gameState.nombreDetective = "";
+          gameState.casosResueltos = 0;
+          gameState.intentosTotalesGlobal = 0;
+          gameState.libreta = [];
+          gameState.misteriosDisponibles = [...misterios];
+          gameState.misterioActualData = null;
+          gameState.intentosRestantesMisterio = 3;
+          gameState.etapaActual = "";
+          gameState.isMusicPlaying = false;
+          modal.remove();
+          continueGameInitialization();
+        });
+    } else {
+      continueGameInitialization();
     }
+  } else {
+    continueGameInitialization();
+  }
+}
+
+// Split initialization logic to reuse after modal decision
+function continueGameInitialization() {
+  if (gameState.nombreDetective) {
     showWelcomeBack();
   } else {
-    gameState.misteriosDisponibles = [...misterios]; // Copia inicial
     showNewPlayerWelcome();
   }
   loadFeaturedCases();
+
+  // Initialize audio for the first mystery
+  if (misterios.length > 0) {
+    backgroundAudio = new Howl({
+      src: [misterios[0].musicUrl],
+      loop: true,
+      volume: audioVolumeInput.value,
+    });
+    if (gameState.isMusicPlaying) {
+      backgroundAudio.play();
+    }
+    updateAudioToggleIcon();
+  }
 
   detectiveNameInput.addEventListener("keydown", () => {
     errorMessage.classList.add("hidden");
@@ -96,6 +200,8 @@ function initGame() {
   saveNotesBtn.addEventListener("click", saveNotebook);
   closeModalBtn.addEventListener("click", closeSolvedModal);
   nextCaseBtn.addEventListener("click", closeSolvedModal);
+  audioToggleBtn.addEventListener("click", toggleAudio);
+  audioVolumeInput.addEventListener("input", adjustVolume);
 }
 
 function loadFeaturedCases() {
@@ -108,14 +214,19 @@ function loadFeaturedCases() {
     const caseDiv = document.createElement("div");
     caseDiv.className = `bg-gray-800 p-4 rounded border-l-4 border-${color}-600 glow`;
     caseDiv.innerHTML = `
-            <h3 class="title-font text-lg text-${color}-400 mb-2">${
+      <img src="${
+        misterio.imageUrl
+      }" class="w-full h-32 object-cover rounded mb-2" alt="${
+      misterio.nombre
+    }" />
+      <h3 class="title-font text-lg text-${color}-400 mb-2">${
       misterio.nombre
     }</h3>
-            <p class="text-gray-400 text-sm">${misterio.narrativa.substring(
-              0,
-              70
-            )}...</p>
-        `;
+      <p class="text-gray-400 text-sm">${misterio.narrativa.substring(
+        0,
+        70
+      )}...</p>
+    `;
     featuredCasesDiv.appendChild(caseDiv);
   }
 }
@@ -141,25 +252,19 @@ function handleStartGame() {
   }
 
   gameState.nombreDetective = nombre;
-  // No reiniciar casos resueltos o intentos si el nombre ya existía y se está continuando.
-  // Esta función es para un inicio "fresco" o un nuevo nombre.
-  // Si se quisiera una lógica de perfiles múltiples, se necesitaría un manejo más complejo aquí.
-  // Por ahora, si el nombre es nuevo, se resetean estas estadísticas.
   const existingProfile = localStorage.getItem("simuladorMisteriosState_v2");
   if (existingProfile) {
     const parsedProfile = JSON.parse(existingProfile);
     if (parsedProfile.nombreDetective !== nombre) {
-      // Nuevo detective
       gameState.casosResueltos = 0;
       gameState.intentosTotalesGlobal = 0;
-      gameState.libreta = "";
+      gameState.libreta = [];
       gameState.misteriosDisponibles = [...misterios];
     }
   } else {
-    // No hay perfil existente en absoluto
     gameState.casosResueltos = 0;
     gameState.intentosTotalesGlobal = 0;
-    gameState.libreta = "";
+    gameState.libreta = [];
     gameState.misteriosDisponibles = [...misterios];
   }
 
@@ -176,15 +281,33 @@ function transitionToGameSection() {
   gameSection.classList.remove("hidden");
   updateDetectiveProfileDisplay();
   renderMysteriesList();
-  showMysteriesScreen(); // Asegura que se muestre la lista de misterios
+  showMysteriesScreen();
+  // Update audio for the first mystery
+  if (misterios.length > 0) {
+    if (backgroundAudio) {
+      backgroundAudio.stop();
+    }
+    backgroundAudio = new Howl({
+      src: [misterios[0].musicUrl],
+      loop: true,
+      volume: audioVolumeInput.value,
+    });
+    if (gameState.isMusicPlaying) {
+      backgroundAudio.play();
+    }
+    updateAudioToggleIcon();
+  }
 }
 
 function updateDetectiveProfileDisplay() {
   detectiveNameDisplay.textContent = gameState.nombreDetective;
   casosResueltosDisplay.textContent = gameState.casosResueltos;
   intentosTotalesDisplay.textContent = gameState.intentosTotalesGlobal;
-  notebookEntry.textContent = gameState.libreta || "Aún no hay notas...";
-  notebookInput.value = gameState.libreta || "";
+  notebookEntry.textContent =
+    gameState.libreta.length > 0
+      ? gameState.libreta.join("\n")
+      : "Aún no hay notas...";
+  notebookInput.value = ""; // Ensure input is cleared on display update
 }
 
 function renderMysteriesList() {
@@ -199,6 +322,11 @@ function renderMysteriesList() {
     misterioCard.className =
       "bg-gray-800 p-4 rounded border-l-4 border-amber-600 glow cursor-pointer hover:bg-gray-700 transition-colors";
     misterioCard.innerHTML = `
+      <img src="${
+        misterio.imageUrl
+      }" class="w-full h-40 object-cover rounded mb-3" alt="${
+      misterio.nombre
+    }" />
       <h3 class="title-font text-lg text-amber-400 mb-2">${misterio.nombre}</h3>
       <p class="text-gray-400 text-sm mb-3">${misterio.narrativa.substring(
         0,
@@ -207,7 +335,7 @@ function renderMysteriesList() {
       <button class="bg-amber-700 hover:bg-amber-600 text-white text-sm px-3 py-1 rounded glow select-mystery-btn" data-misterio-nombre="${
         misterio.nombre
       }">
-          Investigar <i class="fas fa-search ml-1"></i>
+        Investigar <i class="fas fa-search ml-1"></i>
       </button>
     `;
     misteriosListDiv.appendChild(misterioCard);
@@ -229,9 +357,18 @@ function selectMystery(nombreMisterio) {
 
   gameState.misterioActualData = misterioSeleccionado;
   gameState.intentosRestantesMisterio = 3;
-  gameState.etapaActual = "lugares"; // Iniciar siempre por lugares
+  gameState.etapaActual = "lugares";
+
+  // Clear all option divs when starting a new mystery
+  opcionesLugaresDiv.innerHTML = "";
+  opcionesObjetosDiv.innerHTML = "";
+  opcionesSospechososDiv.innerHTML = "";
+  opcionesLugaresDiv.style.display = "none";
+  opcionesObjetosDiv.style.display = "none";
+  opcionesSospechososDiv.style.display = "none";
 
   misterioNombreDisplay.textContent = gameState.misterioActualData.nombre;
+  misterioImagen.src = gameState.misterioActualData.imageUrl;
   misterioNarrativaDisplay.innerHTML = `<p>${gameState.misterioActualData.narrativa}</p>`;
   intentosRestantesDisplay.textContent = gameState.intentosRestantesMisterio;
 
@@ -239,59 +376,73 @@ function selectMystery(nombreMisterio) {
   resultadoAreaDiv.classList.add("hidden");
   pistaActualDisplay.style.display = "none";
 
-  renderOptionsForEtapa();
+  // Update audio for the selected mystery
+  if (backgroundAudio) {
+    backgroundAudio.stop();
+  }
+  backgroundAudio = new Howl({
+    src: [gameState.misterioActualData.musicUrl],
+    loop: true,
+    volume: audioVolumeInput.value,
+  });
+  if (gameState.isMusicPlaying) {
+    backgroundAudio.play();
+  }
+  updateAudioToggleIcon();
 
+  renderOptionsForEtapa();
   misteriosListContainer.classList.add("hidden");
   misterioActualDiv.classList.remove("hidden");
 }
 
 function renderOptionsForEtapa() {
-  // Limpiar y ocultar todas las opciones primero
-  opcionesLugaresDiv.innerHTML = "";
-  opcionesObjetosDiv.innerHTML = "";
-  opcionesSospechososDiv.innerHTML = "";
-
-  opcionesLugaresDiv.style.display = "none";
-  opcionesObjetosDiv.style.display = "none";
-  opcionesSospechososDiv.style.display = "none";
-  pistaActualDisplay.style.display = "none";
-
   let opcionesArray;
   let pistaParaEtapa;
   let divParaOpciones;
 
+  // Only clear and set up the current stage's div, leaving others intact
   switch (gameState.etapaActual) {
     case "lugares":
+      opcionesLugaresDiv.innerHTML = ""; // Clear only the current stage
       opcionesArray = gameState.misterioActualData.opciones.lugares;
       pistaParaEtapa = gameState.misterioActualData.pistas.lugar;
       divParaOpciones = opcionesLugaresDiv;
       opcionesLugaresDiv.style.display = "block";
       break;
     case "objetos":
+      opcionesObjetosDiv.innerHTML = ""; // Clear only the current stage
       opcionesArray = gameState.misterioActualData.opciones.objetos;
       pistaParaEtapa = gameState.misterioActualData.pistas.objeto;
       divParaOpciones = opcionesObjetosDiv;
       opcionesObjetosDiv.style.display = "block";
+      opcionesLugaresDiv.style.display = "block"; // Ensure previous stage remains visible
       break;
     case "sospechosos":
+      opcionesSospechososDiv.innerHTML = ""; // Clear only the current stage
       opcionesArray = gameState.misterioActualData.opciones.sospechosos;
       pistaParaEtapa = gameState.misterioActualData.pistas.sospechoso;
       divParaOpciones = opcionesSospechososDiv;
       opcionesSospechososDiv.style.display = "block";
+      opcionesLugaresDiv.style.display = "block"; // Ensure previous stages remain visible
+      opcionesObjetosDiv.style.display = "block";
       break;
     default:
       return;
   }
 
-  // Mostrar pista general para la etapa actual
+  // Update the clue display
   if (pistaParaEtapa) {
     pistaActualDisplay.textContent = `Pista: ${pistaParaEtapa}`;
     pistaActualDisplay.style.display = "block";
+  } else {
+    pistaActualDisplay.style.display = "none";
   }
 
-  opcionesArray.forEach((opcionTexto) => {
+  // Shuffle the options before rendering
+  const shuffledOpciones = shuffleArray(opcionesArray);
+
+  shuffledOpciones.forEach((opcionTexto) => {
     const button = document.createElement("button");
-    // Tailwind classes applied via global style for these buttons now
     button.textContent = opcionTexto;
     button.addEventListener("click", () =>
       verificarEleccion(opcionTexto, button)
@@ -307,7 +458,6 @@ function verificarEleccion(eleccion, buttonElement) {
   let esCorrecto = false;
   let etapaSuperada = false;
 
-  // Deshabilitar todos los botones de la etapa actual para prevenir clics múltiples
   const currentOptionButtons =
     buttonElement.parentElement.querySelectorAll("button");
   currentOptionButtons.forEach((btn) => (btn.disabled = true));
@@ -331,7 +481,7 @@ function verificarEleccion(eleccion, buttonElement) {
       esCorrecto = eleccion === gameState.misterioActualData.sospechosoCorrecto;
       if (esCorrecto) {
         resolverMisterioConExito();
-        return; // Termina la función aquí si se resuelve con éxito
+        return;
       }
       break;
   }
@@ -344,29 +494,23 @@ function verificarEleccion(eleccion, buttonElement) {
     gameState.intentosRestantesMisterio--;
     gameState.intentosTotalesGlobal++;
     intentosRestantesDisplay.textContent = gameState.intentosRestantesMisterio;
-    updateDetectiveProfileDisplay(); // Actualizar intentos totales globales
-    resultadoDisplay.textContent =
-      "Incorrecto. Te quedan " +
-      gameState.intentosRestantesMisterio +
-      " intentos.";
+    updateDetectiveProfileDisplay();
+    resultadoDisplay.textContent = `Incorrecto. Te quedan ${gameState.intentosRestantesMisterio} intentos.`;
     resultadoAreaDiv.classList.remove("hidden");
 
     if (gameState.intentosRestantesMisterio <= 0) {
       resolverMisterioConFallo();
       return;
     }
-    // Si es incorrecto pero quedan intentos, permitir seleccionar otra opción de la misma etapa
     currentOptionButtons.forEach((btn) => {
-      if (btn !== buttonElement) btn.disabled = false; // Reactivar otros botones si no fueron el incorrecto
+      if (btn !== buttonElement) btn.disabled = false;
     });
   } else {
-    // Es correcto
     resultadoDisplay.textContent = "¡Correcto! Pasando a la siguiente etapa...";
     resultadoAreaDiv.classList.remove("hidden");
-    // Ocultar pista de la etapa anterior y renderizar opciones para la nueva etapa después de un breve delay
     pistaActualDisplay.style.display = "none";
     setTimeout(() => {
-      resultadoAreaDiv.classList.add("hidden"); // Ocultar mensaje de "Correcto!"
+      resultadoAreaDiv.classList.add("hidden");
       renderOptionsForEtapa();
     }, 1500);
   }
@@ -375,12 +519,9 @@ function verificarEleccion(eleccion, buttonElement) {
 
 function resolverMisterioConExito() {
   gameState.casosResueltos++;
-
-  // Remover el misterio resuelto de la lista de disponibles
   gameState.misteriosDisponibles = gameState.misteriosDisponibles.filter(
     (m) => m.nombre !== gameState.misterioActualData.nombre
   );
-
   updateDetectiveProfileDisplay();
   saveGameState();
 
@@ -393,10 +534,15 @@ function resolverMisterioConExito() {
     <p><strong>Sospechoso:</strong> ${gameState.misterioActualData.sospechosoCorrecto}</p>
   `;
   solvedModal.classList.remove("hidden");
+  if (backgroundAudio) {
+    backgroundAudio.pause();
+    gameState.isMusicPlaying = false;
+    updateAudioToggleIcon();
+  }
 }
 
 function resolverMisterioConFallo() {
-  gameState.intentosTotalesGlobal++; // Contar el último intento fallido si agota intentos
+  gameState.intentosTotalesGlobal++;
   updateDetectiveProfileDisplay();
   saveGameState();
 
@@ -404,43 +550,72 @@ function resolverMisterioConFallo() {
   modalTitle.textContent = "Misterio No Resuelto";
   modalSolutionText.innerHTML = `
     <p class="mb-4 text-red-300">No has resuelto el misterio "${gameState.misterioActualData.nombre}".</p>
+   
+    <!--
     <p class="mb-2">La solución era:</p>
     <p class="mb-2"><strong>Lugar:</strong> ${gameState.misterioActualData.lugarCorrecto}</p>
     <p class="mb-2"><strong>Objeto:</strong> ${gameState.misterioActualData.objetoCorrecto}</p>
     <p><strong>Sospechoso:</strong> ${gameState.misterioActualData.sospechosoCorrecto}</p>
+    -->
+
     <p class="mt-4 text-gray-400">Mejor suerte en tu próximo caso...</p>
   `;
   solvedModal.classList.remove("hidden");
+  if (backgroundAudio) {
+    backgroundAudio.pause();
+    gameState.isMusicPlaying = false;
+    updateAudioToggleIcon();
+  }
 }
 
 function closeSolvedModal() {
   solvedModal.classList.add("hidden");
-  showMysteriesScreen(); // Volver a la lista de misterios
+  showMysteriesScreen();
 }
 
 function showMysteriesScreen() {
   misterioActualDiv.classList.add("hidden");
   misteriosListContainer.classList.remove("hidden");
-  // Asegurarse de que los botones de opción estén ocultos si se vuelve sin terminar
   opcionesLugaresDiv.style.display = "none";
   opcionesObjetosDiv.style.display = "none";
   opcionesSospechososDiv.style.display = "none";
   pistaActualDisplay.style.display = "none";
   resultadoAreaDiv.classList.add("hidden");
-  renderMysteriesList(); // Re-renderizar por si un misterio fue resuelto
+  renderMysteriesList();
+  // Update audio for the mysteries list
+  if (gameState.misteriosDisponibles.length > 0) {
+    if (backgroundAudio) {
+      backgroundAudio.stop();
+    }
+    backgroundAudio = new Howl({
+      src: [gameState.misteriosDisponibles[0].musicUrl],
+      loop: true,
+      volume: audioVolumeInput.value,
+    });
+    if (gameState.isMusicPlaying) {
+      backgroundAudio.play();
+    }
+    updateAudioToggleIcon();
+  }
 }
 
 function resetCurrentMysteryState() {
   if (gameState.misterioActualData) {
-    // No reiniciar intentos totales globales, solo los del misterio actual
     gameState.intentosRestantesMisterio = 3;
-    gameState.etapaActual = "lugares"; // Reiniciar a la primera etapa
+    gameState.etapaActual = "lugares";
     intentosRestantesDisplay.textContent = gameState.intentosRestantesMisterio;
     resultadoDisplay.textContent = "";
     resultadoAreaDiv.classList.add("hidden");
     pistaActualDisplay.style.display = "none";
 
-    // Limpiar clases de botones seleccionados
+    // Clear all option divs when resetting the mystery
+    opcionesLugaresDiv.innerHTML = "";
+    opcionesObjetosDiv.innerHTML = "";
+    opcionesSospechososDiv.innerHTML = "";
+    opcionesLugaresDiv.style.display = "none";
+    opcionesObjetosDiv.style.display = "none";
+    opcionesSospechososDiv.style.display = "none";
+
     document
       .querySelectorAll(
         "#opciones-lugares button, #opciones-objetos button, #opciones-sospechosos button"
@@ -450,17 +625,46 @@ function resetCurrentMysteryState() {
         btn.disabled = false;
       });
 
-    renderOptionsForEtapa(); // Re-renderizar opciones para la etapa inicial
+    renderOptionsForEtapa();
     saveGameState();
   }
 }
 
 function saveNotebook() {
-  gameState.libreta = notebookInput.value;
-  notebookEntry.textContent = gameState.libreta || "Aún no hay notas...";
-  saveGameState();
+  const newNote = notebookInput.value.trim();
+  if (newNote) {
+    gameState.libreta.push(newNote); // Add new note to the array
+    notebookEntry.textContent = gameState.libreta.join("\n"); // Display all notes with line breaks
+    notebookInput.value = ""; // Clear the input field
+    saveGameState();
+  }
 }
 
 function saveGameState() {
   localStorage.setItem("simuladorMisteriosState_v2", JSON.stringify(gameState));
+}
+
+function toggleAudio() {
+  if (!backgroundAudio) return;
+  if (gameState.isMusicPlaying) {
+    backgroundAudio.pause();
+    gameState.isMusicPlaying = false;
+  } else {
+    backgroundAudio.play();
+    gameState.isMusicPlaying = true;
+  }
+  updateAudioToggleIcon();
+  saveGameState();
+}
+
+function updateAudioToggleIcon() {
+  audioToggleBtn.innerHTML = gameState.isMusicPlaying
+    ? '<i class="fas fa-pause"></i>'
+    : '<i class="fas fa-play"></i>';
+}
+
+function adjustVolume() {
+  if (backgroundAudio) {
+    backgroundAudio.volume(audioVolumeInput.value);
+  }
 }

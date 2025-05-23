@@ -1,0 +1,324 @@
+{
+  "misterios": [
+    {
+      "nombre": "El Enigma del Museo Silencioso",
+      "narrativa": "Una noche, un artefacto invaluable desapareció del museo sin dejar rastro. Las cámaras no captaron nada, pero el eco de un susurro aún resuena en algún lugar.",
+      "lugarCorrecto": "Sala de exposiciones",
+      "objetoCorrecto": "Estatua dorada",
+      "sospechosoCorrecto": "Guía turístico",
+      "imageUrl": "../data/images/MuseoSilencioso.jpg",
+      "musicUrl": "https://cdn.pixabay.com/audio/2023/01/01/mystery-background-loop.mp3",
+      "opciones": {
+        "lugares": [
+          "Sala de exposiciones",
+          "Cafetería",
+          "Tienda de regalos",
+          "Baño"
+        ],
+        "objetos": [
+          "Estatua dorada",
+          "Cuadro famoso",
+          "Joya antigua",
+          "Documento histórico"
+        ],
+        "sospechosos": [
+          "Guía turístico",
+          "Visitante",
+          "Guardia de seguridad",
+          "Director del museo"
+        ]
+      },
+      "pistas": {
+        "lugar": "El lugar del crimen es donde el silencio es más profundo, pero algo lo interrumpe.",
+        "objeto": "El objeto involucrado refleja algo que no debería estar allí.",
+        "sospechoso": "El culpable es alguien que conoce cada rincón del museo."
+      }
+    },
+    {
+      "nombre": "La Sombra en la Mansión Embrujada",
+      "narrativa": "Durante una fiesta, un grito resonó en la mansión y una joya invaluable desapareció. Las luces parpadearon y alguien se desvaneció en la penumbra.",
+      "lugarCorrecto": "Sala de baile",
+      "objetoCorrecto": "Collar de diamantes",
+      "sospechosoCorrecto": "Invitado misterioso",
+      "imageUrl": "../data/images/MansionEmbrujada.jpg",
+      "musicUrl": "https://cdn.pixabay.com/audio/2023/01/02/haunted-mansion-loop.mp3",
+      "opciones": {
+        "lugares": ["Sala de baile", "Biblioteca", "Jardín", "Cocina"],
+        "objetos": [
+          "Collar de diamantes",
+          "Pistola antigua",
+          "Libro raro",
+          "Botella de vino"
+        ],
+        "sospechosos": ["Invitado misterioso", "Anfitrión", "Sirviente", "Chef"]
+      },
+      "pistas": {
+        "lugar": "El crimen ocurrió donde los pasos resuenan más allá de lo normal.",
+        "objeto": "Lo que se llevaron brilla con un fulgor que ciega.",
+        "sospechoso": "El culpable no pertenece del todo a este lugar."
+      }
+    },
+    {
+      "nombre": "El Secreto del Laboratorio Prohibido",
+      "narrativa": "Un experimento fallido dejó un rastro de caos en el laboratorio. Algo peligroso fue robado bajo la luz de las alarmas.",
+      "lugarCorrecto": "Sala de experimentos",
+      "objetoCorrecto": "Frasco químico",
+      "sospechosoCorrecto": "Científico jefe",
+      "imageUrl": "../data/images/LaboratorioProhibido.jpg",
+      "musicUrl": "https://cdn.pixabay.com/audio/2023/01/03/lab-ambient-loop.mp3",
+      "opciones": {
+        "lugares": [
+          "Sala de experimentos",
+          "Oficina",
+          "Almacén",
+          "Sala de control"
+        ],
+        "objetos": [
+          "Frasco químico",
+          "Computadora",
+          "Herramienta quirúrgica",
+          "Diagrama técnico"
+        ],
+        "sospechosos": ["Científico jefe", "Asistente", "Técnico", "Guardia"]
+      },
+      "pistas": {
+        "lugar": "El lugar vibra con energía contenida.",
+        "objeto": "Lo robado es pequeño pero letal.",
+        "sospechoso": "El culpable tiene las manos manchadas de conocimiento."
+      }
+    },
+    {
+      "nombre": "La Traición Bajo la Corona",
+      "narrativa": "El rey fue encontrado sin vida tras un banquete. Alguien cercano escondió la verdad entre las sombras del castillo.",
+      "lugarCorrecto": "Salón del trono",
+      "objetoCorrecto": "Daga envenenada",
+      "sospechosoCorrecto": "Consejero real",
+      "imageUrl": "../data/images/TraicionCorona.jpg",
+      "musicUrl": "https://cdn.pixabay.com/audio/2023/01/04/castle-mystery-loop.mp3",
+      "opciones": {
+        "lugares": [
+          "Salón del trono",
+          "Mazmorras",
+          "Jardines reales",
+          "Torre del reloj"
+        ],
+        "objetos": [
+          "Daga envenenada",
+          "Cetro real",
+          "Pergamino sellado",
+          "Copa de oro"
+        ],
+        "sospechosos": [
+          "Consejero real",
+          "Rey",
+          "Guardia real",
+          "Noble visitante"
+        ]
+      },
+      "pistas": {
+        "lugar": "El crimen ocurrió donde el poder se siente más pesado.",
+        "objeto": "El arma susurra al pasar desapercibida.",
+        "sospechoso": "El culpable habla con autoridad disfrazada."
+      }
+    },
+    {
+      "nombre": "El Último Pasajero del Tren Nocturno",
+      "narrativa": "Un pasajero desapareció en el tren bajo la luna llena. Algo quedó atrás, oculto entre el traqueteo de los vagones.",
+      "lugarCorrecto": "Vagón de carga",
+      "objetoCorrecto": "Maleta cerrada",
+      "sospechosoCorrecto": "Revisor",
+      "imageUrl": "../data/images/UltimoPasajeroDelTrenNocturno.jpg",
+      "musicUrl": "https://cdn.pixabay.com/audio/2023/01/05/train-ambient-loop.mp3",
+      "opciones": {
+        "lugares": [
+          "Vagón de carga",
+          "Comedor",
+          "Cabina del conductor",
+          "Vagón de pasajeros"
+        ],
+        "objetos": [
+          "Maleta cerrada",
+          "Boleto rasgado",
+          "Reloj de bolsillo",
+          "Linterna rota"
+        ],
+        "sospechosos": ["Revisor", "Pasajero solitario", "Cocinero", "Mecánico"]
+      },
+      "pistas": {
+        "lugar": "El lugar guarda más de lo que aparenta.",
+        "objeto": "Lo perdido contiene un secreto que no se ve.",
+        "sospechoso": "El culpable controla el ritmo del viaje."
+      }
+    },
+    {
+      "nombre": "El Misterio de la Biblioteca Sumergida",
+      "narrativa": "Tras una inundación en la ciudad, la antigua biblioteca quedó medio sumergida. Alguien robó un tomo prohibido sin dejar huella de su travesía entre los estantes mojados.",
+      "lugarCorrecto": "Sección de manuscritos",
+      "objetoCorrecto": "Tomo prohibido",
+      "sospechosoCorrecto": "Bibliotecario nocturno",
+      "imageUrl": "../data/images/BiblotecaSumergida.jpg",
+      "musicUrl": "https://cdn.pixabay.com/audio/2023/02/10/submerged-library-loop.mp3",
+      "opciones": {
+        "lugares": [
+          "Sección de manuscritos",
+          "Sala de lectura",
+          "Depósito de mapas",
+          "Vestíbulo principal"
+        ],
+        "objetos": [
+          "Tomo prohibido",
+          "Mapa antiguo",
+          "Pluma de plata",
+          "Candil apagado"
+        ],
+        "sospechosos": [
+          "Bibliotecario nocturno",
+          "Investigador visitante",
+          "Guardia de seguridad",
+          "Conserje"
+        ]
+      },
+      "pistas": {
+        "lugar": "El agua dejó huellas que llevan al rincón más olvidado.",
+        "objeto": "Lo robado conserva un aroma a tinta y misterio.",
+        "sospechoso": "El culpable trabaja cuando todos duermen."
+      }
+    },
+    {
+      "nombre": "La Noche en el Observatorio Solitario",
+      "narrativa": "Bajo un cielo estrellado, un telescopio de gran potencia fue saboteado y la lente principal desapareció. Solo un astro aficionado estuvo presente.",
+      "lugarCorrecto": "Cúpula principal",
+      "objetoCorrecto": "Lente principal",
+      "sospechosoCorrecto": "Astrónomo residente",
+      "imageUrl": "../data/images/ObservatorioSolitario.jpg",
+      "musicUrl": "https://cdn.pixabay.com/audio/2023/02/15/observatory-ambient-loop.mp3",
+      "opciones": {
+        "lugares": [
+          "Cúpula principal",
+          "Sala de control",
+          "Jardín de meteoritos",
+          "Cafetería"
+        ],
+        "objetos": [
+          "Lente principal",
+          "Planisferio antiguo",
+          "Registro de observaciones",
+          "Linterna de mano"
+        ],
+        "sospechosos": [
+          "Astrónomo residente",
+          "Estudiante de verano",
+          "Guía turístico",
+          "Técnico de sonido"
+        ]
+      },
+      "pistas": {
+        "lugar": "Solo ahí se sentía el zumbido de los engranajes.",
+        "objeto": "Lo sustraído brilla con la luz de las estrellas.",
+        "sospechoso": "El culpable es quien controla el encendido."
+      }
+    },
+    {
+      "nombre": "El Silencio del Faro Abandonado",
+      "narrativa": "Los guardias del faro escucharon un grito ahogado y encontraron la linterna robada. Nadie vio llegar ni partir a nadie bajo la niebla.",
+      "lugarCorrecto": "Sala de máquinas",
+      "objetoCorrecto": "Linterna antigua",
+      "sospechosoCorrecto": "Farero jubilado",
+      "imageUrl": "../data/images/ElSilencioDelFaroAbandonado.jpg",
+      "musicUrl": "https://cdn.pixabay.com/audio/2023/02/20/lighthouse-mystery-loop.mp3",
+      "opciones": {
+        "lugares": [
+          "Sala de máquinas",
+          "Galería de luz",
+          "Escalera de caracol",
+          "Dormitorio"
+        ],
+        "objetos": [
+          "Linterna antigua",
+          "Registro de guardias",
+          "Reloj de cuerda",
+          "Catalejo"
+        ],
+        "sospechosos": [
+          "Farero jubilado",
+          "Guardia costero",
+          "Visitante errante",
+          "Marinero"
+        ]
+      },
+      "pistas": {
+        "lugar": "El ruido de la maquinaria cesó justo antes del incidente.",
+        "objeto": "Lo robado proyecta sombras inquietantes.",
+        "sospechoso": "El culpable conoce cada palanca y tuerca."
+      }
+    },
+    {
+      "nombre": "El Retrato que Susurra",
+      "narrativa": "En una mansión victoriana, un retrato familiar susurra secretos al oído de quien pasa. Tras una de esas voces, desapareció un medallón de familia.",
+      "lugarCorrecto": "Salón de la chimenea",
+      "objetoCorrecto": "Medallón de familia",
+      "sospechosoCorrecto": "Ama de llaves",
+      "imageUrl": "../data/images/RetratoQueSusurra.jpg",
+      "musicUrl": "https://cdn.pixabay.com/audio/2023/02/25/whispering-portrait-loop.mp3",
+      "opciones": {
+        "lugares": [
+          "Salón de la chimenea",
+          "Galería de retratos",
+          "Biblioteca",
+          "Pasillo principal"
+        ],
+        "objetos": [
+          "Medallón de familia",
+          "Libro de cuentos",
+          "Guante de seda",
+          "Copa de cristal"
+        ],
+        "sospechosos": [
+          "Ama de llaves",
+          "Mayordomo",
+          "Visita de la tarde",
+          "Niñera"
+        ]
+      },
+      "pistas": {
+        "lugar": "El frío es más intenso donde las llamas no llegan.",
+        "objeto": "Lo sustraído guarda el recuerdo de generaciones.",
+        "sospechoso": "El culpable atiende cada rincón del hogar."
+      }
+    },
+    {
+      "nombre": "El Tren Fantasma del Desierto",
+      "narrativa": "Un convoy abandonado en medio del desierto albergaba un cofre sellado. Cuando volvieron, el cofre estaba abierto y su contenido, esparcido en la arena.",
+      "lugarCorrecto": "Vagón de carga trasero",
+      "objetoCorrecto": "Cofre sellado",
+      "sospechosoCorrecto": "Maquinista fantasma",
+      "imageUrl": "../data/images/TrenFantasmaDelDesierto.jpg",
+      "musicUrl": "https://cdn.pixabay.com/audio/2023/03/01/desert-train-loop.mp3",
+      "opciones": {
+        "lugares": [
+          "Vagón de carga trasero",
+          "Cabina del maquinista",
+          "Pasillo central",
+          "Cisterna de agua"
+        ],
+        "objetos": [
+          "Cofre sellado",
+          "Documento cifrado",
+          "Linterna de aceite",
+          "Carta sin remitente"
+        ],
+        "sospechosos": [
+          "Maquinista fantasma",
+          "Aventurero solitario",
+          "Contrabandista",
+          "Ingeniero"
+        ]
+      },
+      "pistas": {
+        "lugar": "El silencio es absoluto donde no llega el eco.",
+        "objeto": "Lo abierto dejó un rastro de polvo dorado.",
+        "sospechoso": "El culpable aparece solo en los espejismos."
+      }
+    }
+  ]
+}
