@@ -4,7 +4,7 @@ let savedDetectiveName = ""; // Added to store the name found in localStorage
 
 async function loadMisterios() {
   try {
-    const response = await fetch("/data/misteriosData.json");
+    const response = await fetch("data/misteriosData.json");
     if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
     const data = await response.json();
     misterios = data.misterios;
