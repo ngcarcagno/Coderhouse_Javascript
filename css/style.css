@@ -169,3 +169,25 @@ body {
 #misterio-imagen:hover {
   opacity: 0.9;
 }
+
+.smoke-effect {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  z-index: -1; /* Ensures it stays behind all content */
+  background: url("../data/images/fog.png");
+  opacity: 0.3;
+  animation: smokeMove 30s ease-in-out infinite alternate;
+}
+
+@keyframes smokeMove {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100% 100%;
+  }
+}
