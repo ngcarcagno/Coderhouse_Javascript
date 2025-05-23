@@ -1,5 +1,6 @@
+import audioManager from "./AudioManager.js";
+
 let misterios = [];
-let backgroundAudio = null; // Howler.js instance for background music
 let savedDetectiveName = ""; // Added to store the name found in localStorage
 
 async function loadMisterios() {
@@ -90,7 +91,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 async function initGame() {
-  const savedState = localStorage.getItem("simuladorMisteriosState_v2");
+  const savedState = localStorage.getItem("misteriosSinResolver_save");
   if (savedState) {
     const parsedState = JSON.parse(savedState);
     savedDetectiveName = parsedState.nombreDetective || "";
@@ -146,7 +147,7 @@ async function initGame() {
       document
         .getElementById("reset-investigation")
         .addEventListener("click", () => {
-          localStorage.removeItem("simuladorMisteriosState_v2");
+          localStorage.removeItem("misteriosSinResolver_save");
           gameState.nombreDetective = "";
           gameState.casosResueltos = 0;
           gameState.intentosTotalesGlobal = 0;
@@ -176,18 +177,12 @@ function continueGameInitialization() {
   }
   loadFeaturedCases();
 
-  // Initialize audio for the first mystery
-  if (misterios.length > 0) {
-    backgroundAudio = new Howl({
-      src: [misterios[0].musicUrl],
-      loop: true,
-      volume: audioVolumeInput.value,
-    });
-    if (gameState.isMusicPlaying) {
-      backgroundAudio.play();
-    }
-    updateAudioToggleIcon();
+  // Initialize audio
+  gameState.isMusicPlaying = audioManager.getMusicPlayingState();
+  if (!gameState.isMusicPlaying) {
+    audioManager.playBackgroundMusic();
   }
+  updateAudioToggleIcon();
 
   detectiveNameInput.addEventListener("keydown", () => {
     errorMessage.classList.add("hidden");
@@ -252,7 +247,7 @@ function handleStartGame() {
   }
 
   gameState.nombreDetective = nombre;
-  const existingProfile = localStorage.getItem("simuladorMisteriosState_v2");
+  const existingProfile = localStorage.getItem("misteriosSinResolver_save");
   if (existingProfile) {
     const parsedProfile = JSON.parse(existingProfile);
     if (parsedProfile.nombreDetective !== nombre) {
@@ -282,21 +277,6 @@ function transitionToGameSection() {
   updateDetectiveProfileDisplay();
   renderMysteriesList();
   showMysteriesScreen();
-  // Update audio for the first mystery
-  if (misterios.length > 0) {
-    if (backgroundAudio) {
-      backgroundAudio.stop();
-    }
-    backgroundAudio = new Howl({
-      src: [misterios[0].musicUrl],
-      loop: true,
-      volume: audioVolumeInput.value,
-    });
-    if (gameState.isMusicPlaying) {
-      backgroundAudio.play();
-    }
-    updateAudioToggleIcon();
-  }
 }
 
 function updateDetectiveProfileDisplay() {
@@ -375,20 +355,6 @@ function selectMystery(nombreMisterio) {
   resultadoDisplay.textContent = "";
   resultadoAreaDiv.classList.add("hidden");
   pistaActualDisplay.style.display = "none";
-
-  // Update audio for the selected mystery
-  if (backgroundAudio) {
-    backgroundAudio.stop();
-  }
-  backgroundAudio = new Howl({
-    src: [gameState.misterioActualData.musicUrl],
-    loop: true,
-    volume: audioVolumeInput.value,
-  });
-  if (gameState.isMusicPlaying) {
-    backgroundAudio.play();
-  }
-  updateAudioToggleIcon();
 
   renderOptionsForEtapa();
   misteriosListContainer.classList.add("hidden");
@@ -491,6 +457,7 @@ function verificarEleccion(eleccion, buttonElement) {
   );
 
   if (!esCorrecto) {
+    audioManager.playClueNegative();
     gameState.intentosRestantesMisterio--;
     gameState.intentosTotalesGlobal++;
     intentosRestantesDisplay.textContent = gameState.intentosRestantesMisterio;
@@ -506,6 +473,7 @@ function verificarEleccion(eleccion, buttonElement) {
       if (btn !== buttonElement) btn.disabled = false;
     });
   } else {
+    audioManager.playCluePositive();
     resultadoDisplay.textContent = "¡Correcto! Pasando a la siguiente etapa...";
     resultadoAreaDiv.classList.remove("hidden");
     pistaActualDisplay.style.display = "none";
@@ -525,6 +493,7 @@ function resolverMisterioConExito() {
   updateDetectiveProfileDisplay();
   saveGameState();
 
+  audioManager.playMysterySuccess();
   modalIcon.innerHTML = '<i class="fas fa-trophy"></i>';
   modalTitle.textContent = "¡Caso Resuelto!";
   modalSolutionText.innerHTML = `
@@ -534,11 +503,6 @@ function resolverMisterioConExito() {
     <p><strong>Sospechoso:</strong> ${gameState.misterioActualData.sospechosoCorrecto}</p>
   `;
   solvedModal.classList.remove("hidden");
-  if (backgroundAudio) {
-    backgroundAudio.pause();
-    gameState.isMusicPlaying = false;
-    updateAudioToggleIcon();
-  }
 }
 
 function resolverMisterioConFallo() {
@@ -546,26 +510,14 @@ function resolverMisterioConFallo() {
   updateDetectiveProfileDisplay();
   saveGameState();
 
+  audioManager.playMysteryFail();
   modalIcon.innerHTML = '<i class="fas fa-times-circle text-red-500"></i>';
   modalTitle.textContent = "Misterio No Resuelto";
   modalSolutionText.innerHTML = `
     <p class="mb-4 text-red-300">No has resuelto el misterio "${gameState.misterioActualData.nombre}".</p>
-   
-    <!--
-    <p class="mb-2">La solución era:</p>
-    <p class="mb-2"><strong>Lugar:</strong> ${gameState.misterioActualData.lugarCorrecto}</p>
-    <p class="mb-2"><strong>Objeto:</strong> ${gameState.misterioActualData.objetoCorrecto}</p>
-    <p><strong>Sospechoso:</strong> ${gameState.misterioActualData.sospechosoCorrecto}</p>
-    -->
-
     <p class="mt-4 text-gray-400">Mejor suerte en tu próximo caso...</p>
   `;
   solvedModal.classList.remove("hidden");
-  if (backgroundAudio) {
-    backgroundAudio.pause();
-    gameState.isMusicPlaying = false;
-    updateAudioToggleIcon();
-  }
 }
 
 function closeSolvedModal() {
@@ -582,21 +534,6 @@ function showMysteriesScreen() {
   pistaActualDisplay.style.display = "none";
   resultadoAreaDiv.classList.add("hidden");
   renderMysteriesList();
-  // Update audio for the mysteries list
-  if (gameState.misteriosDisponibles.length > 0) {
-    if (backgroundAudio) {
-      backgroundAudio.stop();
-    }
-    backgroundAudio = new Howl({
-      src: [gameState.misteriosDisponibles[0].musicUrl],
-      loop: true,
-      volume: audioVolumeInput.value,
-    });
-    if (gameState.isMusicPlaying) {
-      backgroundAudio.play();
-    }
-    updateAudioToggleIcon();
-  }
 }
 
 function resetCurrentMysteryState() {
@@ -641,18 +578,11 @@ function saveNotebook() {
 }
 
 function saveGameState() {
-  localStorage.setItem("simuladorMisteriosState_v2", JSON.stringify(gameState));
+  localStorage.setItem("misteriosSinResolver_save", JSON.stringify(gameState));
 }
 
 function toggleAudio() {
-  if (!backgroundAudio) return;
-  if (gameState.isMusicPlaying) {
-    backgroundAudio.pause();
-    gameState.isMusicPlaying = false;
-  } else {
-    backgroundAudio.play();
-    gameState.isMusicPlaying = true;
-  }
+  gameState.isMusicPlaying = audioManager.toggleMusic();
   updateAudioToggleIcon();
   saveGameState();
 }
@@ -664,7 +594,5 @@ function updateAudioToggleIcon() {
 }
 
 function adjustVolume() {
-  if (backgroundAudio) {
-    backgroundAudio.volume(audioVolumeInput.value);
-  }
+  audioManager.setMasterVolume(audioVolumeInput.value);
 }

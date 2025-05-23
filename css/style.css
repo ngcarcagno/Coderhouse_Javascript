@@ -180,7 +180,7 @@ body {
   z-index: -1; /* Ensures it stays behind all content */
   background: url("../data/images/fog.png");
   opacity: 0.3;
-  animation: smokeMove 30s ease-in-out infinite alternate;
+  animation: smokeMove 60s ease-in-out infinite alternate;
 }
 
 @keyframes smokeMove {
