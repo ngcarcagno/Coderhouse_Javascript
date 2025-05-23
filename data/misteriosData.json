@@ -6,7 +6,7 @@
       "lugarCorrecto": "Sala de exposiciones",
       "objetoCorrecto": "Estatua dorada",
       "sospechosoCorrecto": "Guía turístico",
-      "imageUrl": "../data/images/MuseoSilencioso.jpg",
+      "imageUrl": "data/images/MuseoSilencioso.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/01/01/mystery-background-loop.mp3",
       "opciones": {
         "lugares": [
@@ -40,7 +40,7 @@
       "lugarCorrecto": "Sala de baile",
       "objetoCorrecto": "Collar de diamantes",
       "sospechosoCorrecto": "Invitado misterioso",
-      "imageUrl": "../data/images/MansionEmbrujada.jpg",
+      "imageUrl": "data/images/MansionEmbrujada.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/01/02/haunted-mansion-loop.mp3",
       "opciones": {
         "lugares": ["Sala de baile", "Biblioteca", "Jardín", "Cocina"],
@@ -64,7 +64,7 @@
       "lugarCorrecto": "Sala de experimentos",
       "objetoCorrecto": "Frasco químico",
       "sospechosoCorrecto": "Científico jefe",
-      "imageUrl": "../data/images/LaboratorioProhibido.jpg",
+      "imageUrl": "data/images/LaboratorioProhibido.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/01/03/lab-ambient-loop.mp3",
       "opciones": {
         "lugares": [
@@ -93,7 +93,7 @@
       "lugarCorrecto": "Salón del trono",
       "objetoCorrecto": "Daga envenenada",
       "sospechosoCorrecto": "Consejero real",
-      "imageUrl": "../data/images/TraicionCorona.jpg",
+      "imageUrl": "data/images/TraicionCorona.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/01/04/castle-mystery-loop.mp3",
       "opciones": {
         "lugares": [
@@ -127,7 +127,7 @@
       "lugarCorrecto": "Vagón de carga",
       "objetoCorrecto": "Maleta cerrada",
       "sospechosoCorrecto": "Revisor",
-      "imageUrl": "../data/images/UltimoPasajeroDelTrenNocturno.jpg",
+      "imageUrl": "data/images/UltimoPasajeroDelTrenNocturno.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/01/05/train-ambient-loop.mp3",
       "opciones": {
         "lugares": [
@@ -156,7 +156,7 @@
       "lugarCorrecto": "Sección de manuscritos",
       "objetoCorrecto": "Tomo prohibido",
       "sospechosoCorrecto": "Bibliotecario nocturno",
-      "imageUrl": "../data/images/BiblotecaSumergida.jpg",
+      "imageUrl": "data/images/BiblotecaSumergida.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/02/10/submerged-library-loop.mp3",
       "opciones": {
         "lugares": [
@@ -190,7 +190,7 @@
       "lugarCorrecto": "Cúpula principal",
       "objetoCorrecto": "Lente principal",
       "sospechosoCorrecto": "Astrónomo residente",
-      "imageUrl": "../data/images/ObservatorioSolitario.jpg",
+      "imageUrl": "data/images/ObservatorioSolitario.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/02/15/observatory-ambient-loop.mp3",
       "opciones": {
         "lugares": [
@@ -224,7 +224,7 @@
       "lugarCorrecto": "Sala de máquinas",
       "objetoCorrecto": "Linterna antigua",
       "sospechosoCorrecto": "Farero jubilado",
-      "imageUrl": "../data/images/ElSilencioDelFaroAbandonado.jpg",
+      "imageUrl": "data/images/ElSilencioDelFaroAbandonado.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/02/20/lighthouse-mystery-loop.mp3",
       "opciones": {
         "lugares": [
@@ -258,7 +258,7 @@
       "lugarCorrecto": "Salón de la chimenea",
       "objetoCorrecto": "Medallón de familia",
       "sospechosoCorrecto": "Ama de llaves",
-      "imageUrl": "../data/images/RetratoQueSusurra.jpg",
+      "imageUrl": "data/images/RetratoQueSusurra.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/02/25/whispering-portrait-loop.mp3",
       "opciones": {
         "lugares": [
@@ -292,7 +292,7 @@
       "lugarCorrecto": "Vagón de carga trasero",
       "objetoCorrecto": "Cofre sellado",
       "sospechosoCorrecto": "Maquinista fantasma",
-      "imageUrl": "../data/images/TrenFantasmaDelDesierto.jpg",
+      "imageUrl": "data/images/TrenFantasmaDelDesierto.jpg",
       "musicUrl": "https://cdn.pixabay.com/audio/2023/03/01/desert-train-loop.mp3",
       "opciones": {
         "lugares": [
