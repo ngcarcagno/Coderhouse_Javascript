@@ -1,6 +1,6 @@
 # Misterios Sin Resolver
 
-<img src="data/images/Portada_MisteriosSinResolver.jpg" alt="Portada de Misterios Sin Resolver" width="300">
+<img src="data/images/Portada_MisteriosSinResolver.jpg" alt="Portada de Misterios Sin Resolver" style="max-width: 100%; display: block; margin: 0 auto;">
 
 ¡Bienvenido a _Misterios Sin Resolver_, un juego de misterio y deducción creado como proyecto final del curso de JavaScript de CoderHouse! Sumérgete en el rol de un detective astuto y resuelve casos intrigantes utilizando pistas, opciones estratégicas y un cuaderno de notas para registrar tus descubrimientos.
 
